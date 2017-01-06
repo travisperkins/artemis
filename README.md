@@ -128,7 +128,7 @@ A Tiered Security Model (TSM) introduces the concept of being in one of a select
 
 The approach taken by Artemis to security via the “balanced” and “enhanced” tiers TSM aspires to be compliant to the objectives of the Center for Internet Security (CIS) L1 benchmark. Most of the work completed thus far has been hardening of SSH, kernel parameters affecting network behaviour, hardening of cron files etc.  
 
-A Lynis (https://cisofy.com/lynis/) configuration file, with the option to download and run a compliance check of a resultant build against the CIS benchmark will soon be included in the project.
+A Lynis (https://cisofy.com/lynis/) configuration file, with the option to download Lynis and run a compliance check of a resultant build against the CIS benchmark will soon be included in the project.
 
 <!------------------------------------------------------------------------------------------------>
 

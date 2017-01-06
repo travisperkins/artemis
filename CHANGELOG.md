@@ -4,7 +4,7 @@
 
 <!------------------------------------------------------------------------------------------------>
 
-# **v1.5.0 (January 4, 2017)**
+# **[v1.5.0](https://github.com/travisperkins/artemis/releases/tag/v1.5.0) (January 4, 2017)**
 
 ## NOTES:
 1. All roles now use **become** as required

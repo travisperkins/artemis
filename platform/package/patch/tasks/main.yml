@@ -1,0 +1,66 @@
+###################################################################################################
+
+- name: managed | check
+
+  when: patch_managed
+
+  become: true
+
+  stat: path={{ managed_dest }} follow=true get_checksum=false get_md5=false
+
+  register: managed
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - patch
+
+###################################################################################################
+
+- name: managed | upgrade
+
+  when: patch_managed
+    and not managed.stat.exists
+
+  set_fact:
+    patch_upgrade    : true
+    patch_apt_upgrade: '{{ patch_apt_upgrade_unmanaged }}'
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - patch
+
+###################################################################################################
+
+- name: debian
+
+  when: os_family_is_debian
+
+  include: debian.yml
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - patch
+    - debian
+
+###################################################################################################
+
+- name: redhat
+
+  when: os_family_is_redhat
+
+  include: redhat.yml
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - patch
+    - redhat
+
+###################################################################################################

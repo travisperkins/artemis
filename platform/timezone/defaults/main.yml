@@ -1,0 +1,21 @@
+###################################################################################################
+
+timezone: Europe/London
+
+###################################################################################################
+
+timezone_command_base  : timedatectl
+timezone_status_command: '{{ timezone_command_base }} status'
+
+###################################################################################################
+
+timezone_clock_utc    : true
+timezone_clock_search : 'RTC in local TZ: {% if timezone_clock_utc %}no{% else %}yes{% endif %}'
+timezone_clock_command: '{{ timezone_command_base }} set-local-rtc {{ (not timezone_clock_utc) | int }}'
+
+###################################################################################################
+
+timezone_zone_search : 'Time zone: {{ timezone }}'
+timezone_zone_command: '{{ timezone_command_base }} set-timezone {{ timezone }}'
+
+###################################################################################################

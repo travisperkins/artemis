@@ -1,0 +1,59 @@
+###################################################################################################
+
+- name: import | distribution
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}'
+    - '{{ dev_null }}'
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+
+###################################################################################################
+
+- name: ubuntu | 14
+
+  when: ansible_distribution               | lower == 'ubuntu'
+    and ansible_distribution_major_version | lower == '14'
+
+  include: ubuntu-14.yml
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - ubuntu-14
+
+###################################################################################################
+
+- name: systemd
+
+  when: ansible_distribution               | lower != 'ubuntu'
+     or ansible_distribution_major_version | lower != '14'
+
+  include: systemd.yml
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - systemd
+
+###################################################################################################

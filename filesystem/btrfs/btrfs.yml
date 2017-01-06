@@ -1,0 +1,22 @@
+###################################################################################################
+
+- name : btrfs
+
+  hosts: all
+
+  gather_facts: false
+
+  roles:
+
+    -   role: bootstrap
+
+    - { role: filesystem/btrfs, btrfs_label: '{{ home_name }}' }
+
+    -   role: platform/bounce
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################

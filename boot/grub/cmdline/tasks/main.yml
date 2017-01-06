@@ -1,0 +1,99 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - grub_cmdline_arg_name is defined
+      - grub_cmdline_arg_name is not none
+      - grub_cmdline_arg_name | length > 0
+
+      - grub_cmdline_arg_value is defined
+      - grub_cmdline_arg_value is not none
+      - grub_cmdline_arg_value | length > 0
+
+  tags:
+    - artemis
+    - boot
+    - grub
+    - cmdline
+
+###################################################################################################
+
+- name: check
+
+  become: true
+
+  command: '{{ grub_cmdline_grub_check_command }}'
+
+  register: check
+
+  changed_when: false
+  failed_when : check.rc not in [{{ grub_cmdline_grub_check_match }}, {{ grub_cmdline_grub_check_no_match }}]
+
+  tags:
+    - artemis
+    - boot
+    - grub
+    - cmdline
+
+###################################################################################################
+
+- name: insert
+
+  when: check.rc == {{ grub_cmdline_grub_check_no_match }}
+
+  become: true
+
+  lineinfile: dest={{  grub_dest                         }}
+            regexp='{{ grub_cmdline_grub_insert_search   }}'
+              line='{{ grub_cmdline_grub_insert_replace  }}'
+          backrefs={{  grub_cmdline_grub_insert_backrefs }}
+
+  register: insert
+
+  tags:
+    - artemis
+    - boot
+    - grub
+    - cmdline
+
+###################################################################################################
+
+- name: update
+
+  when: check.rc == {{ grub_cmdline_grub_check_match }}
+
+  become: true
+
+  lineinfile: dest={{  grub_dest                         }}
+            regexp='{{ grub_cmdline_grub_update_search   }}'
+              line='{{ grub_cmdline_grub_update_replace  }}'
+          backrefs={{  grub_cmdline_grub_update_backrefs }}
+
+  register: update
+
+  tags:
+    - artemis
+    - boot
+    - grub
+    - cmdline
+
+###################################################################################################
+
+- name: signal
+
+  when: insert.changed
+     or update.changed
+
+  set_fact:
+    grub_update: true
+
+  tags:
+    - artemis
+    - boot
+    - grub
+    - cmdline
+
+###################################################################################################

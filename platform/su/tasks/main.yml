@@ -1,0 +1,39 @@
+###################################################################################################
+
+- name: root
+
+  become: true
+
+  lineinfile: dest={{  su_pam_file         }}
+            regexp='{{ su_pam_root_search  }}'
+              line='{{ su_pam_root_replace }}'
+      insertbefore='{{ su_pam_root_insert  }}'
+             owner={{  su_pam_owner        }}
+             group={{  su_pam_group        }}
+              mode={{  su_pam_mode         }}
+             state=present
+            create=true
+
+  tags:
+    - artemis
+    - platform
+    - su
+
+###################################################################################################
+
+- name: wheel
+
+  become: true
+
+  lineinfile: dest={{  su_pam_file          }}
+            regexp='{{ su_pam_wheel_search  }}'
+              line='{{ su_pam_wheel_replace }}'
+       insertafter='{{ su_pam_wheel_insert  }}'
+             state={{  su_pam_wheel_state   }}
+
+  tags:
+    - artemis
+    - platform
+    - su
+
+###################################################################################################

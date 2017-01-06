@@ -1,0 +1,33 @@
+###################################################################################################
+
+issue: true
+
+###################################################################################################
+
+issue_word: issue
+
+###################################################################################################
+
+issue_base: '{{ etc_base }}'
+
+###################################################################################################
+
+issue_file   : '{{ issue_word }}'
+issue_src    : '{{ issue_file }}.j2'
+issue_dest   : '{{ issue_base }}/{{ issue_file }}'
+issue_mode   : '0644'
+issue_message: '{{ issue_standard_message }}'
+
+###################################################################################################
+
+issue_net_file   : '{{ issue_word     }}.net'
+issue_net_src    : '{{ issue_net_file }}.j2'
+issue_net_dest   : '{{ issue_base     }}/{{ issue_net_file }}'
+issue_net_mode   : '{{ issue_mode     }}'
+issue_net_message: '{{ issue_message  }}'
+
+###################################################################################################
+
+issue_standard_message: This system is for authorised use only. Unauthorised use of this system is strictly prohibited and may be subject to criminal prosecution.
+
+###################################################################################################

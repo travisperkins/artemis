@@ -1,0 +1,135 @@
+###################################################################################################
+
+- name: import | security | balanced
+
+  when: security_mode_inc_balanced
+
+  include_vars: '{{ security_word }}-{{ security_mode_balanced }}'
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+
+###################################################################################################
+
+- name: allow | stat
+
+  become: true
+
+  stat: path={{ cron_allow_file }} follow=true get_checksum=false get_md5=false
+
+  register: allow
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+    - allow
+
+###################################################################################################
+
+- name: allow | state
+
+  when: cron_allow
+    and not allow.stat.exists
+
+  set_fact:
+    cron_allow_state: touch
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+    - allow
+
+###################################################################################################
+
+- name: allow | control
+
+  become: true
+
+  file: dest={{  cron_allow_file  }}
+        mode='{{ cron_allow_mode  }}'
+       owner={{  cron_allow_owner }}
+       group={{  cron_allow_group }}
+       state={{  cron_allow_state }}
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+    - allow
+
+###################################################################################################
+
+- name: deny | stat
+
+  become: true
+
+  stat: path={{ cron_deny_file }} follow=true get_checksum=false get_md5=false
+
+  register: deny
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+    - deny
+
+###################################################################################################
+
+- name: deny | state
+
+  when: cron_deny
+    and not deny.stat.exists
+
+  set_fact:
+    cron_deny_state: touch
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+    - deny
+
+###################################################################################################
+
+- name: deny | control
+
+  become: true
+
+  file: dest={{  cron_deny_file  }}
+        mode='{{ cron_deny_mode  }}'
+       owner={{  cron_deny_owner }}
+       group={{  cron_deny_group }}
+       state={{  cron_deny_state }}
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - shared
+    - deny
+
+###################################################################################################

@@ -1,0 +1,15 @@
+###################################################################################################
+
+halt_delay  : 1
+halt_prefix : 'nohup bash -c "sleep {{ halt_delay }} ; '
+halt_infix  : systemctl poweroff
+halt_suffix : '" {{ null_redirect }} &'
+halt_command: '{{ halt_prefix }}{{ halt_infix }}{{ halt_suffix }}'
+
+###################################################################################################
+
+halt_host: '{{ ssh_host      }}'
+halt_port: '{{ ssh_port      }}'
+halt_wait: '{{ ssh_wait_down }}'
+
+###################################################################################################

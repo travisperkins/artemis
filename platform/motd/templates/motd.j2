@@ -1,0 +1,56 @@
+
+###############################################################################
+
+{% if motd_identity_display | bool %}
+ Host         : {{ motd_identity_host }}
+ FQDN         : {{ motd_identity_fqdn }}
+
+{% endif %}
+ Artemis      : {{ motd_artemis }}
+
+{% if motd_hardware_display | bool %}
+{% if ansible_virtualization_role | lower == 'host' %}
+ Hypervisor   : None (Bare Metal)
+{% else %}
+ Hypervisor   : {{ ansible_virtualization_type | capitalize }} ({{ ansible_virtualization_role | capitalize }})
+{% endif %}
+ vCPUs        : {{ ansible_processor_vcpus      }} x {{ ansible_processor | last }}
+ RAM          : {{ ansible_memory_mb.real.total }} MB
+{% if ansible_memory_mb.swap.total > 0 %}
+ Swap         : {{ ansible_memory_mb.swap.total }} MB
+{% else %}
+ Swap         : None
+{% endif %}
+{% for device in ansible_devices | sort %}
+ Storage {{ loop.index | center(2) }}   : {{ device }} {{ ansible_devices[device].size }} ({% if ansible_devices[device].rotational | bool %}Rotational{% else %}Solid-State{% endif %})
+{% endfor %}
+
+{% endif %}
+ Platform     : {{ ansible_system                 }}
+ OS Family    : {{ os_family_native               }}
+ Packaging    : {{ package_manager_upper          }}
+ Architecture : {{ ansible_userspace_architecture }} ({{ ansible_userspace_bits       }}-bit)
+ Distribution : {{ ansible_distribution           }} {{  ansible_distribution_version }} ({{ ansible_distribution_release | capitalize }})
+{% if not ((bounce | bool) and (patched | bool)) %}
+ Kernel       : {{ ansible_kernel }}
+{% endif %}
+
+{% if motd_tz_display | bool %}
+ Time Zone    : {{ motd_tz_zone_value  }}
+ UTC Clock    : {{ motd_tz_clock_value }}
+
+{% endif %}
+{% if motd_features_display | bool     %}
+{% if motd_firewall_display | bool     %}
+ Firewall     : {{ motd_firewall_value }}
+{% endif %}
+{% if motd_ipv6_display     | bool     %}
+ IPv6         : {{ motd_ipv6_value     }}
+{% endif %}
+{% if motd_mac_display      | bool     %}
+ MAC          : {{ motd_mac_value      }}
+{% endif %}
+
+{% endif %}
+###############################################################################
+

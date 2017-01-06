@@ -1,0 +1,220 @@
+###################################################################################################
+
+- name: import | distribution
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}'
+    - '{{ dev_null }}'
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+
+###################################################################################################
+
+- name: standard | configure
+
+  when: security_mode_inc_standard
+
+  become: true
+
+  template: src={{ sysctl_standard_src  }}
+           dest={{ sysctl_standard_dest }}
+           mode={{ sysctl_mode          }}
+
+  register: standard_configure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - standard
+
+###################################################################################################
+
+- name: standard | unconfigure
+
+  when: security_mode_not_inc_standard
+
+  become: true
+
+  file: dest={{ sysctl_standard_dest }} state=absent
+
+  register: standard_unconfigure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - standard
+
+###################################################################################################
+
+- name: balanced | configure
+
+  when: security_mode_inc_balanced
+
+  become: true
+
+  template: src={{ sysctl_balanced_src  }}
+           dest={{ sysctl_balanced_dest }}
+           mode={{ sysctl_mode          }}
+
+  register: balanced_configure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - balanced
+
+###################################################################################################
+
+- name: balanced | unconfigure
+
+  when: security_mode_not_inc_balanced
+
+  become: true
+
+  file: dest={{ sysctl_balanced_dest }} state=absent
+
+  register: balanced_unconfigure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - balanced
+
+###################################################################################################
+
+- name: enhanced | configure
+
+  when: security_mode_inc_enhanced
+
+  become: true
+
+  template: src={{ sysctl_enhanced_src  }}
+           dest={{ sysctl_enhanced_dest }}
+           mode={{ sysctl_mode          }}
+
+  register: enhanced_configure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - enhanced
+
+###################################################################################################
+
+- name: enhanced | unconfigure
+
+  when: security_mode_not_inc_enhanced
+
+  become: true
+
+  file: dest={{ sysctl_enhanced_dest }} state=absent
+
+  register: enhanced_unconfigure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - enhanced
+
+###################################################################################################
+
+- name: custom | configure
+
+  when: sysctl_params is defined
+    and sysctl_params is not none
+    and sysctl_params | length > 0
+
+  become: true
+
+  template: src={{ sysctl_custom_src  }}
+           dest={{ sysctl_custom_dest }}
+           mode={{ sysctl_mode        }}
+
+  register: custom_configure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - custom
+
+###################################################################################################
+
+- name: custom | unconfigure
+
+  when: sysctl_params is not defined
+     or sysctl_params is none
+     or sysctl_params | length == 0
+
+  become: true
+
+  file: dest={{ sysctl_custom_dest }} state=absent
+
+  register: custom_unconfigure
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+    - custom
+
+###################################################################################################
+
+- name: apply
+
+  when: standard_configure.changed or standard_unconfigure.changed
+     or balanced_configure.changed or balanced_unconfigure.changed
+     or enhanced_configure.changed or enhanced_unconfigure.changed
+     or custom_configure.changed   or custom_unconfigure.changed
+
+  become: true
+
+  command: '{{ sysctl_apply }}'
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+
+###################################################################################################
+
+- name: signal
+
+  when: standard_unconfigure.changed
+     or balanced_unconfigure.changed
+     or enhanced_unconfigure.changed
+     or custom_unconfigure.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - kernel
+    - sysctl
+
+###################################################################################################

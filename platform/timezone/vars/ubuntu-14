@@ -1,0 +1,18 @@
+###################################################################################################
+
+timezone_clock_dest   : '{{ etc_base }}/default/rcS'
+timezone_clock_search : ^UTC=
+timezone_clock_replace: "UTC={% if timezone_clock_utc %}yes{% else %}no{% endif %}"
+
+###################################################################################################
+
+timezone_zone_file: timezone
+timezone_zone_src : '{{ timezone_zone_file }}.j2'
+timezone_zone_dest: '{{ etc_base }}/{{ timezone_zone_file }}'
+timezone_zone_mode: '0644'
+
+###################################################################################################
+
+timezone_reconfigure_command: dpkg-reconfigure --frontend noninteractive tzdata
+
+###################################################################################################

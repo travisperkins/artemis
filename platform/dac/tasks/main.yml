@@ -1,0 +1,58 @@
+###################################################################################################
+
+- name: umask | login
+
+  become: true
+
+  lineinfile: dest={{  dac_login_file          }}
+             owner={{  dac_login_owner         }}
+             group={{  dac_login_group         }}
+              mode={{  dac_login_mode          }}
+            regexp='{{ dac_login_umask_search  }}'
+              line='{{ dac_login_umask_replace }}'
+            create=true
+
+  register: login
+
+  tags:
+    - artemis
+    - platform
+    - dac
+
+###################################################################################################
+
+- name: umask | profile
+
+  become: true
+
+  lineinfile: dest={{  dac_profile_file          }}
+             owner={{  dac_profile_owner         }}
+             group={{  dac_profile_group         }}
+              mode={{  dac_profile_mode          }}
+            regexp='{{ dac_profile_umask_search  }}'
+              line='{{ dac_profile_umask_replace }}'
+            create=true
+
+  register: profile
+
+  tags:
+    - artemis
+    - platform
+    - dac
+
+###################################################################################################
+
+- name: signal
+
+  when: login.changed
+     or profile.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - dac
+
+###################################################################################################

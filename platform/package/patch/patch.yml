@@ -1,0 +1,27 @@
+###################################################################################################
+
+- name : patch
+
+  hosts: all
+
+  gather_facts: false
+
+  roles:
+
+    -   role: bootstrap
+
+    - { role: platform/package/patch,
+        patch_update    : true ,
+        patch_upgrade   : true ,
+        patch_autoremove: true ,
+        patch_clean     : true }
+
+    -   role: platform/bounce
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - patch
+
+###################################################################################################

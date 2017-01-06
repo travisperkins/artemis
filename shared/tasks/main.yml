@@ -1,0 +1,111 @@
+###################################################################################################
+
+- name: setup
+
+  when: automatic_setup
+   and (module_setup is not defined
+     or module_setup is none
+     or not module_setup)
+
+  setup:
+
+  tags:
+    - artemis
+    - shared
+
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - overrides_file is not none
+      - overrides_file | length > 0
+
+      - overrides_path is not none
+      - overrides_path | length > 0
+
+      - '{{ deployment_mode_is_live }} or {{ deployment_mode_is_image }}'
+
+      - '{{ security_mode_is_standard }} or {{ security_mode_is_balanced }} or {{ security_mode_is_enhanced }} or {{ security_mode_is_custom }}'
+
+  tags:
+    - artemis
+    - shared
+
+###################################################################################################
+
+- name: deployment | image
+
+  when: deployment_mode_is_image
+
+  set_fact:
+    dynamic_identity: true
+    dynamic_hardware: true
+
+  tags:
+    - artemis
+    - shared
+
+###################################################################################################
+
+- name: overrides | check
+
+  when: overrides_verify
+
+  become: false
+
+  local_action: stat path={{ overrides_path }} follow=true get_checksum=false get_md5=true
+
+  register: check
+
+  tags:
+    - artemis
+    - shared
+
+###################################################################################################
+
+- name: overrides | verify
+
+  when: overrides_verify
+
+  assert:
+    that:
+
+      - check.stat.exists
+
+      - check.stat.md5 is defined
+      - check.stat.md5 is not none
+      - check.stat.md5 | length > 0
+
+  tags:
+    - artemis
+    - shared
+
+###################################################################################################
+
+- name: overrides | verified
+
+  when: overrides_verify
+
+  set_fact:
+    overrides_verified: true
+
+  tags:
+    - artemis
+    - shared
+
+###################################################################################################
+
+- name: overrides | import
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - shared
+
+###################################################################################################

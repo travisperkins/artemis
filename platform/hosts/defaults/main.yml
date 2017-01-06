@@ -1,0 +1,50 @@
+###################################################################################################
+
+hosts: '{{ not (dynamic_identity | bool) }}'
+
+###################################################################################################
+
+hosts_file: hosts
+hosts_src : '{{ hosts_file }}.j2'
+hosts_dest: '{{ etc_base }}/{{ hosts_file }}'
+hosts_mode: '0644'
+
+###################################################################################################
+
+hosts_domain: '{{ host_domain }}'
+
+###################################################################################################
+
+hosts_ipv4_alias  : '{{ host_name                           }}'
+hosts_ipv4_fqdn   : '{{ hosts_ipv4_alias }}.{{ hosts_domain }}'
+hosts_ipv4_address: '{{ ansible_default_ipv4.address        }}'
+
+###################################################################################################
+
+hosts_ipv4_lo_alias  : '{{ network_ipv4_loopback_name                             }}'
+hosts_ipv4_lo_fqdn   : '{{ hosts_ipv4_lo_alias }}.{{ network_ipv4_loopback_domain }}'
+hosts_ipv4_lo_address: '{{ network_ipv4_loopback_address                          }}'
+
+###################################################################################################
+
+hosts_ipv6_lo_alias  : '{{ network_ipv6_loopback_name                             }}'
+hosts_ipv6_lo_fqdn   : '{{ hosts_ipv6_lo_alias }}.{{ network_ipv6_loopback_domain }}'
+hosts_ipv6_lo_address: '{{ network_ipv6_loopback_address                          }}'
+
+###################################################################################################
+
+hosts_ipv6_link_domain: link-local
+
+###################################################################################################
+
+hosts_ipv6_link_mcast_allnodes_alias  : '{{ network_ipv6_link_mcast_allnodes_name    }}'
+hosts_ipv6_link_mcast_allnodes_fqdn   : '{{ hosts_ipv6_link_mcast_allnodes_alias     }}.{{ hosts_ipv6_link_domain }}'
+hosts_ipv6_link_mcast_allnodes_address: '{{ network_ipv6_link_mcast_allnodes_address }}'
+
+###################################################################################################
+
+hosts_ipv6_link_mcast_allrouters_alias  : '{{ network_ipv6_link_mcast_allrouters_name    }}'
+hosts_ipv6_link_mcast_allrouters_fqdn   : '{{ hosts_ipv6_link_mcast_allrouters_alias     }}.{{ hosts_ipv6_link_domain }}'
+hosts_ipv6_link_mcast_allrouters_address: '{{ network_ipv6_link_mcast_allrouters_address }}'
+
+###################################################################################################

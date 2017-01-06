@@ -1,0 +1,92 @@
+###################################################################################################
+
+sysctl_word: sysctl
+
+###################################################################################################
+
+sysctl_number: 98
+sysctl_name  : artemis
+sysctl_suffix: .conf
+sysctl_base  : '{{ etc_base }}/{{ sysctl_word }}.d'
+sysctl_mode  : '0644'
+
+###################################################################################################
+
+sysctl_apply: systemctl restart systemd-{{ sysctl_word }}
+
+###################################################################################################
+
+sysctl_standard_order : 1
+sysctl_standard_mode  : '{{ security_mode_standard }}'
+sysctl_standard_src   : '{{ sysctl_standard_mode   }}.j2'
+sysctl_standard_dest  : '{{ sysctl_base            }}/{{ sysctl_number }}-{{ sysctl_name }}-{{ sysctl_standard_order }}-{{ sysctl_standard_mode }}{{ sysctl_suffix }}'
+sysctl_standard_params:
+
+  - vm.swappiness=0
+
+  - net.ipv4.tcp_syncookies=1
+
+  - net.ipv4.conf.all.rp_filter=1
+  - net.ipv6.conf.all.rp_filter=1
+  - net.ipv4.conf.default.rp_filter=1
+  - net.ipv6.conf.default.rp_filter=1
+
+  - net.ipv4.conf.all.log_martians=1
+  - net.ipv4.conf.default.log_martians=1
+
+###################################################################################################
+
+sysctl_balanced_order : 2
+sysctl_balanced_mode  : '{{ security_mode_balanced }}'
+sysctl_balanced_src   : '{{ sysctl_balanced_mode   }}.j2'
+sysctl_balanced_dest  : '{{ sysctl_base            }}/{{ sysctl_number }}-{{ sysctl_name }}-{{ sysctl_balanced_order }}-{{ sysctl_balanced_mode }}{{ sysctl_suffix }}'
+sysctl_balanced_params:
+
+  - kernel.dmesg_restrict=1
+
+  - net.ipv4.ip_forward=0
+  - net.ipv4.tcp_timestamps=1
+
+  - net.ipv6.conf.all.accept_ra=0
+  - net.ipv6.conf.default.accept_ra=0
+
+  - net.ipv4.conf.all.send_redirects=0
+  - net.ipv4.conf.default.send_redirects=0
+
+  - net.ipv4.conf.all.accept_redirects=0
+  - net.ipv6.conf.all.accept_redirects=0
+  - net.ipv4.conf.default.accept_redirects=0
+  - net.ipv6.conf.default.accept_redirects=0
+
+  - net.ipv4.conf.all.accept_source_route=0
+  - net.ipv4.conf.default.accept_source_route=0
+
+  - net.ipv4.icmp_echo_ignore_broadcasts=1
+  - net.ipv4.icmp_ignore_bogus_error_responses=1
+
+###################################################################################################
+
+sysctl_enhanced_order : 3
+sysctl_enhanced_mode  : '{{ security_mode_enhanced }}'
+sysctl_enhanced_src   : '{{ sysctl_enhanced_mode   }}.j2'
+sysctl_enhanced_dest  : '{{ sysctl_base            }}/{{ sysctl_number }}-{{ sysctl_name }}-{{ sysctl_enhanced_order }}-{{ sysctl_enhanced_mode }}{{ sysctl_suffix }}'
+sysctl_enhanced_params:
+
+  - fs.suid_dumpable=0
+
+  - kernel.randomize_va_space=2
+
+  - net.ipv4.conf.all.secure_redirects=0
+  - net.ipv4.conf.default.secure_redirects=0
+
+  - net.ipv6.conf.all.accept_redirects=0
+  - net.ipv6.conf.default.accept_redirects=0
+
+###################################################################################################
+
+sysctl_custom_order: 4
+sysctl_custom_mode : '{{ security_mode_custom }}'
+sysctl_custom_src  : '{{ sysctl_custom_mode   }}.j2'
+sysctl_custom_dest : '{{ sysctl_base          }}/{{ sysctl_number }}-{{ sysctl_name }}-{{ sysctl_custom_order }}-{{ sysctl_custom_mode }}{{ sysctl_suffix }}'
+
+###################################################################################################

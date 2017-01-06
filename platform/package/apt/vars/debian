@@ -1,0 +1,12 @@
+###################################################################################################
+
+package_apt_vars_host      : httpredir.debian.org
+package_apt_vars_components: main
+
+###################################################################################################
+
+package_apt_vars_security_host   : security.debian.org
+package_apt_vars_security_url    : '{{ package_apt_security_proto }}{{ package_apt_security_host }}'
+package_apt_vars_security_release: '{{ package_apt_release        }}/updates'
+
+###################################################################################################

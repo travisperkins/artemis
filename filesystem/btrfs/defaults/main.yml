@@ -1,0 +1,101 @@
+###################################################################################################
+
+btrfs_name: btrfs
+
+###################################################################################################
+
+btrfs_level: raid1
+
+###################################################################################################
+
+btrfs_meta : '{{ btrfs_level       }}'
+btrfs_data : '{{ btrfs_level       }}'
+btrfs_mount: /{{ btrfs_label       }}
+btrfs_opts : '{{ btrfs_common_opts }}{{ btrfs_special_opts }}'
+btrfs_dump : 1
+btrfs_pass : 2
+
+###################################################################################################
+
+btrfs_common_opts: '{{ btrfs_ro_opt }},{{ btrfs_dev_opt }},{{ btrfs_suid_opt }},{{ btrfs_exec_opt }},{{ btrfs_auto_opt }},{{ btrfs_user_opt }},{{ btrfs_atime_opt }}'
+
+###################################################################################################
+
+btrfs_ro    : false
+btrfs_ro_opt: '{% if btrfs_ro | bool %}ro{% else %}rw{% endif %}'
+
+###################################################################################################
+
+btrfs_dev    : true
+btrfs_dev_opt: '{% if btrfs_dev | bool %}dev{% else %}nodev{% endif %}'
+
+###################################################################################################
+
+btrfs_suid    : true
+btrfs_suid_opt: '{% if btrfs_suid | bool %}suid{% else %}nosuid{% endif %}'
+
+###################################################################################################
+
+btrfs_exec    : true
+btrfs_exec_opt: '{% if btrfs_exec | bool %}exec{% else %}noexec{% endif %}'
+
+###################################################################################################
+
+btrfs_auto    : true
+btrfs_auto_opt: '{% if btrfs_auto | bool %}auto{% else %}noauto{% endif %}'
+
+###################################################################################################
+
+btrfs_user    : false
+btrfs_user_opt: '{% if btrfs_user | bool %}user{% else %}nouser{% endif %}'
+
+###################################################################################################
+
+btrfs_atime    : false
+btrfs_atime_opt: '{% if btrfs_atime | bool %}atime{% else %}noatime{% endif %}'
+
+###################################################################################################
+
+btrfs_special_opts: ',{{ btrfs_compress_opt }}{{ btrfs_recovery_opt }}{{ btrfs_space_cache_opt }}'
+
+###################################################################################################
+
+btrfs_compress    : lzo
+btrfs_compress_opt: compress={{ btrfs_compress }}
+
+###################################################################################################
+
+btrfs_recovery    : true
+btrfs_recovery_opt: '{% if btrfs_recovery | bool %},recovery{% endif %}'
+
+###################################################################################################
+
+btrfs_space_cache    : true
+btrfs_space_cache_opt: '{% if btrfs_space_cache | bool %},space_cache{% endif %}'
+
+###################################################################################################
+
+btrfs_mount_access: true
+btrfs_mount_user  : '{{ root_user        }}'
+btrfs_mount_group : '{{ btrfs_mount_user }}'
+btrfs_mount_mode  : '0755'
+
+###################################################################################################
+
+btrfs_base_command   : '{{ btrfs_name         }}'
+btrfs_balance_command: '{{ btrfs_base_command }} balance start'
+
+###################################################################################################
+
+btrfs_balance     : true
+btrfs_balance_meta: 25
+btrfs_balance_data: 25
+btrfs_balance_name: '{{ btrfs_name }}-balance-job'
+btrfs_balance_min : '0'
+btrfs_balance_hour: '*'
+
+###################################################################################################
+
+btrfs_devices_flat: '{% for item in btrfs_devices %}{{ item }}{% if not loop.last %} {% endif %}{% endfor %}'
+
+###################################################################################################

@@ -1,0 +1,56 @@
+###################################################################################################
+
+- name: setup
+
+  setup:
+
+  tags:
+    - artemis
+    - platform
+    - motd
+
+###################################################################################################
+
+- name: managed | check
+
+  become: true
+
+  stat: path={{ managed_dest }} follow=true get_checksum=false get_md5=false
+
+  register: managed
+
+  tags:
+    - artemis
+    - platform
+    - motd
+
+###################################################################################################
+
+- name: debian
+
+  when: os_family_is_debian
+
+  include: debian.yml
+
+  tags:
+    - artemis
+    - platform
+    - motd
+    - debian
+
+###################################################################################################
+
+- name: configure
+
+  become: true
+
+  template: src={{ motd_src  }}
+           dest={{ motd_dest }}
+           mode={{ motd_mode }}
+
+  tags:
+    - artemis
+    - platform
+    - motd
+
+###################################################################################################

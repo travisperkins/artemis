@@ -1,0 +1,14 @@
+###################################################################################################
+
+dependencies:
+
+  -   role: shared
+  -   role: network/shared
+
+  -   role: platform/issue
+
+  -   role: platform/package/manager
+
+  - { role: platform/firewall, firewall_ssh_port: '{{ sshd_port }}' }
+
+###################################################################################################

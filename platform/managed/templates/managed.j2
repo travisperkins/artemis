@@ -1,0 +1,13 @@
+###
+### {{ ansible_managed }}
+###
+
+###################################################################################################
+
+Epoch  : {{ ansible_date_time.epoch   }}
+
+ISO8601: {{ ansible_date_time.iso8601 }}
+
+Human  : {{ ansible_date_time.weekday }} {{ ansible_date_time.day }}/{{ ansible_date_time.month }}/{{ ansible_date_time.year }} {{ ansible_date_time.hour }}:{{ ansible_date_time.minute }}:{{ ansible_date_time.second }} {{ ansible_date_time.tz_offset }} {{ ansible_date_time.tz }}
+
+###################################################################################################

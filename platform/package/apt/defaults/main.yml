@@ -1,0 +1,66 @@
+###################################################################################################
+
+package_src : '{{ package_manager_lower }}.j2'
+package_mode: '0644'
+
+###################################################################################################
+
+package_apt_src : '{{ package_src  }}'
+package_apt_dest: '{{ etc_base     }}/{{ package_manager_lower }}/sources.list'
+package_apt_mode: '{{ package_mode }}'
+
+###################################################################################################
+
+package_apt_deb    : deb
+package_apt_deb_src: deb-src
+
+###################################################################################################
+
+package_apt_proto  : '{{ uri_scheme_http            }}'
+package_apt_distro : '{{ distribution_lower         }}'
+package_apt_release: '{{ distribution_release_lower }}'
+
+###################################################################################################
+
+package_apt_host      : '{{ package_apt_vars_host       }}'
+package_apt_components: '{{ package_apt_vars_components }}'
+
+###################################################################################################
+
+package_apt_main_proto     : '{{ package_apt_proto      }}'
+package_apt_main_host      : '{{ package_apt_host       }}'
+package_apt_main_distro    : '{{ package_apt_distro     }}'
+package_apt_main_url       : '{{ package_apt_main_proto }}{{ package_apt_main_host }}/{{ package_apt_main_distro }}'
+package_apt_main_release   : '{{ package_apt_release    }}'
+package_apt_main_components: '{{ package_apt_components }}'
+package_apt_main_entry     : '{{ package_apt_deb        }} {{ package_apt_main_url }} {{ package_apt_main_release }} {{ package_apt_main_components }}'
+
+###################################################################################################
+
+package_apt_updates_proto     : '{{ package_apt_proto         }}'
+package_apt_updates_host      : '{{ package_apt_host          }}'
+package_apt_updates_distro    : '{{ package_apt_distro        }}'
+package_apt_updates_url       : '{{ package_apt_updates_proto }}{{ package_apt_updates_host }}/{{ package_apt_updates_distro }}'
+package_apt_updates_release   : '{{ package_apt_release       }}-updates'
+package_apt_updates_components: '{{ package_apt_components    }}'
+package_apt_updates_entry     : '{{ package_apt_deb           }} {{ package_apt_updates_url }} {{ package_apt_updates_release }} {{ package_apt_updates_components }}'
+
+###################################################################################################
+
+package_apt_security_proto     : '{{ package_apt_proto                 }}'
+package_apt_security_host      : '{{ package_apt_vars_security_host    }}'
+package_apt_security_distro    : '{{ package_apt_distro                }}'
+package_apt_security_url       : '{{ package_apt_vars_security_url     }}'
+package_apt_security_release   : '{{ package_apt_vars_security_release }}'
+package_apt_security_components: '{{ package_apt_components            }}'
+package_apt_security_entry     : '{{ package_apt_deb                   }} {{ package_apt_security_url }} {{ package_apt_security_release }} {{ package_apt_security_components }}'
+
+###################################################################################################
+
+package_apt_sources:
+
+  - '{{ package_apt_main_entry     }}'
+  - '{{ package_apt_updates_entry  }}'
+  - '{{ package_apt_security_entry }}'
+
+###################################################################################################

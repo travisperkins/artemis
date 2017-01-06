@@ -1,0 +1,14 @@
+###################################################################################################
+
+ssh_key_src_name: '{{ ssh_user         }}'
+ssh_key_src_file: '{{ ssh_key_src_name }}{{  ssh_private_ext  }}'
+ssh_key_src_path: '{{ ssh_secrets      }}/{{ ssh_key_src_file }}'
+
+###################################################################################################
+
+ssh_key_dest_name: '{{ ssh_user          }}'
+ssh_key_dest_file: '{{ ssh_key_dest_name }}{{  ssh_private_ext   }}'
+ssh_key_dest_path: '{{ ssh_base          }}/{{ ssh_key_dest_file }}'
+ssh_key_dest_mode: '0600'
+
+###################################################################################################

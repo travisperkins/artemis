@@ -1,0 +1,71 @@
+###################################################################################################
+
+- name: systemd | status
+
+  become: true
+
+  command: '{{ timezone_status_command }}'
+
+  changed_when: false
+
+  register: status
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - systemd
+
+###################################################################################################
+
+- name: systemd | clock
+
+  when: "'{{ timezone_clock_search }}' not in status.stdout"
+
+  become: true
+
+  command: '{{ timezone_clock_command }}'
+
+  register: clock
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - systemd
+
+###################################################################################################
+
+- name: systemd | zone
+
+  when: "'{{ timezone_zone_search }}' not in status.stdout"
+
+  become: true
+
+  command: '{{ timezone_zone_command }}'
+
+  register: zone
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - systemd
+
+###################################################################################################
+
+- name: systemd | signal
+
+  when: clock.changed
+     or zone.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - systemd
+
+###################################################################################################

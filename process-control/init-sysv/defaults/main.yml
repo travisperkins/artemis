@@ -1,0 +1,32 @@
+###################################################################################################
+
+init_sysv_chdir  : /
+init_sysv_run_as : '{{ root_user }}'
+init_sysv_enabled: true
+init_sysv_state  : started
+
+###################################################################################################
+
+init_sysv_src : script.j2
+init_sysv_base: '{{ etc_base       }}/init.d'
+init_sysv_dest: '{{ init_sysv_base }}/{{ init_sysv_name }}'
+init_sysv_mode: '0700'
+
+###################################################################################################
+
+init_sysv_pid_base: /var/run
+init_sysv_pid_file: '{{ init_sysv_pid_base }}/{{ init_sysv_name }}.pid'
+init_sysv_pid_mode: '0600'
+
+###################################################################################################
+
+init_sysv_log_base: /var/log
+init_sysv_log_file: '{{ init_sysv_log_base }}/{{ init_sysv_name }}.log'
+init_sysv_log_mode: '0644'
+
+###################################################################################################
+
+init_sysv_daemonise_command: /sbin/start-stop-daemon
+init_sysv_clear_pid_command: dd if=/dev/null of={{ init_sysv_pid_file }} 2> /dev/null
+
+###################################################################################################

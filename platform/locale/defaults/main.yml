@@ -1,0 +1,14 @@
+###################################################################################################
+
+locale_locale: en_GB.UTF-8
+locale_layout: gb
+
+###################################################################################################
+
+locale_command_base  : localectl
+locale_status_command: '{{ locale_command_base }} status'
+locale_locale_command: '{{ locale_command_base }} set-locale LANG={{ locale_locale }}'
+locale_keymap_command: '{{ locale_command_base }} set-keymap {{      locale_keymap }}'
+locale_layout_command: '{{ locale_command_base }} set-x11-keymap {{  locale_layout }}'
+
+###################################################################################################

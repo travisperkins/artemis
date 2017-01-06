@@ -1,0 +1,117 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ os_family_lower }}'
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - common
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - common
+
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - ssh_user is defined
+      - ssh_user is not none
+      - ssh_user | length > 0
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - common
+
+###################################################################################################
+
+- name: debian | dependencies
+
+  when: os_family_is_debian
+
+  become: true
+
+  with_items: ssh_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - common
+    - debian
+
+###################################################################################################
+
+- name: redhat | dependencies
+
+  when: os_family_is_redhat
+
+  become: true
+
+  with_items: ssh_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - common
+    - redhat
+
+###################################################################################################
+
+- name: discover | home
+
+  become: true
+
+  shell: echo ~{{ ssh_user }}
+
+  changed_when: false
+
+  register: home
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - common
+
+###################################################################################################
+
+- name: base
+
+  become     : true
+  become_user: '{{ ssh_user }}'
+
+  file: dest={{ ssh_base }}
+        mode={{ ssh_mode }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - common
+
+###################################################################################################

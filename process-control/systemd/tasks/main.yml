@@ -1,0 +1,117 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - systemd_name is defined
+      - systemd_name is not none
+      - systemd_name | length > 0
+
+      - systemd_command is defined
+      - systemd_command is not none
+      - systemd_command | length > 0
+
+  tags:
+    - artemis
+    - process-control
+    - systemd
+
+###################################################################################################
+
+- name: configure
+
+  become: true
+
+  template: src={{ systemd_config_src  }}
+           dest={{ systemd_config_dest }}
+           mode={{ systemd_config_mode }}
+
+  register: configure
+
+  tags:
+    - artemis
+    - process-control
+    - systemd
+
+###################################################################################################
+
+- name: reload
+
+  when: configure.changed
+
+  become: true
+
+  command: '{{ systemd_reload_command }}'
+
+  tags:
+    - artemis
+    - process-control
+    - systemd
+
+###################################################################################################
+
+- name: enable
+
+  become: true
+
+  service: name={{ systemd_name    }}
+        enabled={{ systemd_enabled }}
+
+  tags:
+    - artemis
+    - process-control
+    - systemd
+
+###################################################################################################
+
+- name: restart
+
+  when: configure.changed
+    and systemd_state == 'started'
+     or systemd_state == 'restarted'
+
+  become: true
+
+  service: name={{ systemd_name }} state=restarted
+
+  tags:
+    - artemis
+    - process-control
+    - systemd
+
+###################################################################################################
+
+- name: toggle
+
+  when: systemd_state == 'restarted'
+
+  set_fact:
+    systemd_state: started
+
+  tags:
+    - artemis
+    - process-control
+    - systemd
+
+###################################################################################################
+
+- name: service
+
+  when: systemd_state == 'started'
+     or systemd_state == 'reloaded'
+     or systemd_state == 'restarted'
+     or systemd_state == 'stopped'
+
+  become: true
+
+  service: name={{ systemd_name  }}
+          state={{ systemd_state }}
+
+  tags:
+    - artemis
+    - process-control
+    - systemd
+
+###################################################################################################

@@ -1,0 +1,20 @@
+###################################################################################################
+
+bounce_prevention: false
+
+###################################################################################################
+
+bounce_delay  : 1
+bounce_prefix : 'nohup bash -c "sleep {{ bounce_delay }} ; '
+bounce_infix  : systemctl reboot
+bounce_suffix : '" {{ null_redirect }} &'
+bounce_command: '{{ bounce_prefix }}{{ bounce_infix }}{{ bounce_suffix }}'
+
+###################################################################################################
+
+bounce_wait_host: '{{ ssh_host      }}'
+bounce_wait_port: '{{ ssh_port      }}'
+bounce_wait_down: '{{ ssh_wait_down }}'
+bounce_wait_up  : '{{ ssh_wait_up   }}'
+
+###################################################################################################

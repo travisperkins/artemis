@@ -1,0 +1,163 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - grub_timeout is not none
+      - grub_timeout is number
+      - grub_timeout >= 0
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ os_family_lower }}'
+    - '{{ dev_null        }}'
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: redhat | dependencies
+
+  when: os_family_is_redhat
+
+  become: true
+
+  with_items: grub_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - boot
+    - grub
+    - redhat
+
+###################################################################################################
+
+- name: conf | access
+
+  become: true
+
+  file: dest={{ grub_dest  }}
+       owner={{ grub_owner }}
+       group={{ grub_group }}
+        mode={{ grub_mode  }}
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: hidden
+
+  become: true
+
+  lineinfile: dest={{ grub_dest                 }}
+            regexp={{ grub_hidden_timeout_regex }}
+             state=absent
+
+  register: hidden
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: timeout
+
+  become: true
+
+  lineinfile: dest={{ grub_dest            }}
+            regexp={{ grub_timeout_search  }}
+              line={{ grub_timeout_replace }}
+
+  register: timeout
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: cfg | mkconfig
+
+  when: grub_update
+     or hidden.changed
+     or timeout.changed
+
+  become: true
+
+  command: '{{ grub_mkcfg_cmd }}'
+
+  register: mkconfig
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: cfg | access
+
+  become: true
+
+  file: dest={{ grub_cfg_dest  }}
+       owner={{ grub_cfg_owner }}
+       group={{ grub_cfg_group }}
+        mode={{ grub_cfg_mode  }}
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################
+
+- name: signals
+
+  when: mkconfig.changed
+
+  set_fact:
+    grub_update: false
+    bounce     : true
+
+  tags:
+    - artemis
+    - boot
+    - grub
+
+###################################################################################################

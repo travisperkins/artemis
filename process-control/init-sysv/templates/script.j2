@@ -1,0 +1,56 @@
+###
+### {{ ansible_managed }}
+###
+
+###################################################################################################
+
+### BEGIN INIT INFO
+# Provides:       {{ init_sysv_name                                }}
+# Required-Start: {{ init_sysv_required_start | default()          }}
+# Required-Stop:  {{ init_sysv_required_stop  | default()          }}
+# Default-Start:  {{ init_sysv_default_start  | default('2 3 4 5') }}
+# Default-Stop:   {{ init_sysv_default_stop   | default('0 1 6')   }}
+### END INIT INFO
+
+###################################################################################################
+
+case ${1} in
+
+   start)
+      echo 'starting: {{ init_sysv_name }}'
+      {{ init_sysv_daemonise_command }} --start --quiet --make-pidfile --pidfile {{ init_sysv_pid_file }} --chdir {{ init_sysv_chdir }} --chuid {{ init_sysv_run_as }} --background --startas /bin/sh -- -c '{% for entry in init_sysv_env_vars | default() %}{{ entry }} {% endfor %}exec {{ init_sysv_command }} >> {{ init_sysv_log_file }} 2>&1'
+      ;;
+
+   stop)
+      echo 'stopping: {{ init_sysv_name }}'
+      {{ init_sysv_daemonise_command }} --stop --quiet --pidfile {{ init_sysv_pid_file }}
+      {{ init_sysv_clear_pid_command }}
+      ;;
+
+   restart)
+      ${0} stop
+      ${0} start
+      ;;
+
+   status)
+      {{ init_sysv_daemonise_command }} --status --quiet --pidfile {{ init_sysv_pid_file }}
+      state=${?}
+      if [ "${state}" -eq 0 ]; then
+         echo "{{ init_sysv_name }}: running: `cat {{ init_sysv_pid_file }}`"
+      else
+         echo '{{ init_sysv_name }}: stopped'
+      fi
+      exit ${state}
+      ;;
+
+   *)
+      echo 'Usage: {{ init_sysv_dest }} {start|stop|restart|status}'
+      exit 1
+
+esac
+
+###################################################################################################
+
+exit 0
+
+###################################################################################################

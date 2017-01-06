@@ -1,0 +1,62 @@
+###################################################################################################
+
+- name: import | security | balanced
+
+  when: issue
+    and {{ security_mode_inc_balanced }}
+
+  include_vars: '{{ security_word }}-{{ security_mode_balanced }}'
+
+  tags:
+    - artemis
+    - platform
+    - issue
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - issue
+
+###################################################################################################
+
+- name: configure
+
+  when: issue
+
+  become: true
+
+  template: src={{ issue_src  }}
+           dest={{ issue_dest }}
+           mode={{ issue_mode }}
+
+  tags:
+    - artemis
+    - platform
+    - issue
+
+###################################################################################################
+
+- name: configure | net
+
+  when: issue
+
+  become: true
+
+  template: src={{ issue_net_src  }}
+           dest={{ issue_net_dest }}
+           mode={{ issue_net_mode }}
+
+  tags:
+    - artemis
+    - platform
+    - issue
+
+###################################################################################################

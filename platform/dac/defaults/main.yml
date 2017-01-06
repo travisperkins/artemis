@@ -1,0 +1,53 @@
+###################################################################################################
+
+dac_base : '{{ etc_base  }}'
+dac_owner: '{{ root_user }}'
+dac_group: '{{ dac_owner }}'
+dac_mode : '0644'
+
+###################################################################################################
+
+dac_umask_word: umask
+
+###################################################################################################
+
+dac_umask_loose : '022'
+dac_umask_fair  : '027'
+dac_umask_strict: '077'
+
+###################################################################################################
+
+dac_regex_prefix: ^\s*
+dac_regex_suffix: .*$
+
+###################################################################################################
+
+dac_login_base : '{{ dac_base       }}'
+dac_login_file : '{{ dac_login_base }}/login.defs'
+dac_login_owner: '{{ dac_owner      }}'
+dac_login_group: '{{ dac_group      }}'
+dac_login_mode : '{{ dac_mode       }}'
+
+###################################################################################################
+
+dac_login_umask        : '{{ dac_umask_loose        }}'
+dac_login_umask_symbol : '{{ dac_umask_word | upper }}'
+dac_login_umask_search : '{{ dac_regex_prefix       }}{{  dac_login_umask_symbol }}{{ dac_regex_suffix }}'
+dac_login_umask_replace: '{{ dac_login_umask_symbol }} {{ dac_login_umask        }}'
+
+###################################################################################################
+
+dac_profile_base : '{{ dac_base         }}/profile.d'
+dac_profile_file : '{{ dac_profile_base }}/{{ dac_umask_word }}.sh'
+dac_profile_owner: '{{ dac_owner        }}'
+dac_profile_group: '{{ dac_group        }}'
+dac_profile_mode : '{{ dac_mode         }}'
+
+###################################################################################################
+
+dac_profile_umask        : '{{ dac_umask_loose          }}'
+dac_profile_umask_symbol : '{{ dac_umask_word | lower   }}'
+dac_profile_umask_search : '{{ dac_regex_prefix         }}{{  dac_profile_umask_symbol }}{{ dac_regex_suffix }}'
+dac_profile_umask_replace: '{{ dac_profile_umask_symbol }} {{ dac_profile_umask        }}'
+
+###################################################################################################

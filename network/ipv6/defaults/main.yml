@@ -1,0 +1,7 @@
+###################################################################################################
+
+network_ipv6_kernel_arg_name : ipv6.disable
+network_ipv6_kernel_arg_regex: '{{ network_ipv6_kernel_arg_name | replace(".","\.") }}'
+network_ipv6_kernel_arg_value: '{% if network_ipv6 | bool %}0{% else %}1{% endif %}'
+
+###################################################################################################

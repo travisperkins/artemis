@@ -1,0 +1,87 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - ssh_agent_user is defined
+      - ssh_agent_user is not none
+      - ssh_agent_user | length > 0
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - agent
+
+###################################################################################################
+
+- name: env | socket
+
+  become     : true
+  become_user: '{{ ssh_agent_user }}'
+
+  lineinfile: line='{{ ssh_agent_auth_sock_line }}'
+              dest={{  ssh_agent_env_dest       }}
+              mode={{  ssh_agent_env_mode       }}
+            create=true
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - agent
+
+###################################################################################################
+
+- name: env | agent
+
+  become     : true
+  become_user: '{{ ssh_agent_user }}'
+
+  lineinfile: line='{{ ssh_agent_agent_line     }}'
+       insertafter='{{ ssh_agent_auth_sock_line }}'
+              dest={{  ssh_agent_env_dest       }}
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - agent
+
+###################################################################################################
+
+- name: env | add
+
+  become     : true
+  become_user: '{{ ssh_agent_user }}'
+
+  lineinfile: line='{{ ssh_agent_add_line   }}'
+       insertafter='{{ ssh_agent_agent_line }}'
+              dest={{  ssh_agent_env_dest   }}
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - agent
+
+###################################################################################################
+
+- name: env | add | pem
+
+  become     : true
+  become_user: '{{ ssh_agent_user }}'
+
+  lineinfile: line='{{ ssh_agent_add_pem_line }}'
+       insertafter='{{ ssh_agent_add_line     }}'
+              dest={{  ssh_agent_env_dest     }}
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - agent
+
+###################################################################################################

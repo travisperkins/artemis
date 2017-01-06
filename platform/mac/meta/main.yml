@@ -1,0 +1,17 @@
+###################################################################################################
+
+dependencies:
+
+  -   role: shared
+
+  -   role: platform/package/manager
+
+  - { role: boot/grub/cmdline,
+      grub_cmdline_arg_name : '{{ mac_security_kernel_arg_name  }}' ,
+      grub_cmdline_arg_value: '{{ mac_security_kernel_arg_value }}' }
+
+  - { role: boot/grub/cmdline,
+      grub_cmdline_arg_name : '{{ mac_enabled_kernel_arg_name  }}' ,
+      grub_cmdline_arg_value: '{{ mac_enabled_kernel_arg_value }}' }
+
+###################################################################################################

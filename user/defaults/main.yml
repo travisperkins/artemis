@@ -1,0 +1,32 @@
+###################################################################################################
+
+user_home : '{{ user_base }}/{{ user_name }}'
+user_shell: /bin/bash
+user_cron : true
+
+###################################################################################################
+
+user_base_access: true
+user_base_user  : '{{ root_user      }}'
+user_base_group : '{{ user_base_user }}'
+user_base_mode  : '0755'
+
+###################################################################################################
+
+user_ownership_cron   : '{{ user_cron }}'
+user_ownership_user   : '{{ root_user }}'
+user_ownership_name   : '{{ user_name }}-ownership'
+user_ownership_command: chown -R {{ user_name }}:{{ user_group | default(user_name) }} {{ user_home }} {{ null_redirect }}
+user_ownership_min    : '0'
+user_ownership_hour   : '*'
+
+###################################################################################################
+
+user_permissions_cron   : '{{ user_cron }}'
+user_permissions_user   : '{{ user_name }}'
+user_permissions_name   : '{{ user_name }}-permissions'
+user_permissions_command: chmod -R g-rwx,o-rwx {{ user_home }} {{ null_redirect }}
+user_permissions_min    : '0'
+user_permissions_hour   : '*'
+
+###################################################################################################

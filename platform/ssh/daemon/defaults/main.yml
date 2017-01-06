@@ -1,0 +1,95 @@
+###################################################################################################
+
+sshd_bin: sshd
+
+###################################################################################################
+
+sshd_base: '{{ etc_base }}/ssh'
+
+###################################################################################################
+
+sshd_file: config
+sshd_src : '{{ sshd_file }}.j2'
+sshd_dest: '{{ sshd_base }}/{{ sshd_bin }}_{{ sshd_file }}'
+sshd_mode: '0600'
+
+###################################################################################################
+
+sshd_host: '{{ ssh_host }}'
+sshd_port: '{{ ssh_port }}'
+
+###################################################################################################
+
+sshd_true : 'yes'
+sshd_false: 'no'
+
+###################################################################################################
+
+sshd_protocol: 2
+
+###################################################################################################
+
+sshd_hostkey_prefix: '{{ sshd_base }}/ssh_host_'
+sshd_hostkey_suffix: _key
+sshd_hostkeys      :
+
+  - ed25519
+  - rsa
+  - ecdsa
+
+###################################################################################################
+
+sshd_rsaauthentication              : '{{ sshd_false }}'
+sshd_gssapiauthentication           : '{{ sshd_false }}'
+sshd_pubkeyauthentication           : '{{ sshd_true  }}'
+sshd_kerberosauthentication         : '{{ sshd_false }}'
+sshd_passwordauthentication         : '{{ sshd_false }}'
+sshd_hostbasedauthentication        : '{{ sshd_false }}'
+sshd_rhostsrsaauthentication        : '{{ sshd_false }}'
+sshd_kbdinteractiveauthentication   : '{{ sshd_false }}'
+sshd_challengeresponseauthentication: '{{ sshd_false }}'
+
+###################################################################################################
+
+sshd_macs                  : hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,umac-64-etm@openssh.com,hmac-sha1-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com,umac-64@openssh.com,hmac-sha1
+sshd_banner                : '{{ issue_net_dest }}'
+sshd_usedns                : '{{ sshd_false     }}'
+sshd_usepam                : '{{ sshd_true      }}'
+sshd_ciphers               : chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+sshd_loglevel              : INFO
+sshd_acceptenv             :
+sshd_printmotd             : '{{ sshd_true }}'
+sshd_allowusers            :
+sshd_allowgroups           :
+sshd_compression           : '{{ sshd_true }}'
+sshd_maxsessions           : 10
+sshd_maxstartups           : 10:30:100
+sshd_strictmodes           : '{{ sshd_true }}'
+sshd_maxauthtries          : 6
+sshd_permittunnel          : '{{ sshd_false }}'
+sshd_printlastlog          : '{{ sshd_false }}'
+sshd_tcpkeepalive          : '{{ sshd_true  }}'
+sshd_addressfamily         : '{% if network_ipv6 | bool %}any{% else %}inet{% endif %}'
+sshd_kexalgorithms         : curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256
+sshd_x11forwarding         : '{{ sshd_false }}'
+sshd_logingracetime        : 120
+sshd_permitrootlogin       : without-password
+sshd_allowtcpforwarding    : '{{ sshd_true }}'
+sshd_clientalivecountmax   : 3
+sshd_clientaliveinterval   : 0
+sshd_allowagentforwarding  : '{{ sshd_true }}'
+sshd_useprivilegeseparation: sandbox
+
+###################################################################################################
+
+sshd_bounce_prevention: false
+
+###################################################################################################
+
+sshd_check: '{{ sshd_bin }} -T -f {{ sshd_dest }}'
+
+###################################################################################################
+
+sshd_delay: 5
+
+###################################################################################################

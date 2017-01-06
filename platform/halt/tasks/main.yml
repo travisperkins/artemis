@@ -1,0 +1,69 @@
+###################################################################################################
+
+- name: import | distribution
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}'
+    - '{{ dev_null }}'
+
+  tags:
+    - artemis
+    - platform
+    - halt
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - halt
+
+###################################################################################################
+
+- name: flush
+
+  meta: flush_handlers
+
+  tags:
+    - artemis
+    - platform
+    - halt
+
+###################################################################################################
+
+- name: execute
+
+  become: true
+
+  shell: '{{ halt_command }}'
+
+  tags:
+    - artemis
+    - platform
+    - halt
+
+###################################################################################################
+
+- name: wait
+
+  become: false
+
+  local_action: wait_for host={{ halt_host }}
+                         port={{ halt_port }}
+                      timeout={{ halt_wait }}
+                        state=stopped
+
+  tags:
+    - artemis
+    - platform
+    - halt
+
+###################################################################################################

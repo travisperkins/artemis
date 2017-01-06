@@ -1,0 +1,12 @@
+###################################################################################################
+
+package_apt_vars_host      : gb.archive.ubuntu.com
+package_apt_vars_components: main universe
+
+###################################################################################################
+
+package_apt_vars_security_host   : '{{ package_apt_host           }}'
+package_apt_vars_security_url    : '{{ package_apt_security_proto }}{{ package_apt_security_host }}/{{ package_apt_security_distro }}'
+package_apt_vars_security_release: '{{ package_apt_release        }}-security'
+
+###################################################################################################

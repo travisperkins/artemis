@@ -1,0 +1,60 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - ext_label is defined
+      - ext_label is not none
+      - ext_label | length > 0
+
+      - ext_device is defined
+      - ext_device is not none
+      - ext_device | length > 0
+
+      - ext_version is defined
+      - ext_version is not none
+      - ext_version in [2, 3, 4]
+
+  tags:
+    - artemis
+    - filesystem
+    - ext
+
+###################################################################################################
+
+- name: mkfs
+
+  become: true
+
+  filesystem: fstype={{  ext_vfs_type   }}
+                 dev={{  ext_device     }}
+                opts='{{ ext_mkfs_opts  }}'
+               force={{  ext_mkfs_force }}
+
+  tags:
+    - artemis
+    - filesystem
+    - ext
+
+###################################################################################################
+
+- name: mount
+
+  become: true
+
+  mount: src={{ ext_mount_spec  }}
+        name={{ ext_mount_point }}
+        opts={{ ext_mount_opts  }}
+        dump={{ ext_mount_dump  }}
+      passno={{ ext_mount_pass  }}
+      fstype={{ ext_vfs_type    }}
+       state={{ ext_mount_state }}
+
+  tags:
+    - artemis
+    - filesystem
+    - ext
+
+###################################################################################################

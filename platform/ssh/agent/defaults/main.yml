@@ -1,0 +1,32 @@
+###################################################################################################
+
+ssh_agent_home    : '{{ home.stdout    }}'
+ssh_agent_ssh_home: '{{ ssh_agent_home }}/.ssh'
+
+###################################################################################################
+
+ssh_agent_env_file: .bashrc
+ssh_agent_env_dest: '{{ ssh_agent_home }}/{{ ssh_agent_env_file }}'
+ssh_agent_env_mode: '0600'
+
+###################################################################################################
+
+ssh_agent_socket: /tmp/{{ ssh_agent_user }}-ssh-agent
+
+###################################################################################################
+
+ssh_agent_auth_sock_env : SSH_AUTH_SOCK
+ssh_agent_auth_sock_line: '{{ ssh_agent_auth_sock_env }}={{ ssh_agent_socket }}; export {{ ssh_agent_auth_sock_env }}'
+
+###################################################################################################
+
+ssh_agent_agent_command: ssh-agent
+ssh_agent_agent_line   : '{{ ssh_agent_agent_command }} -a {{ ssh_agent_socket }} {{ null_redirect }}'
+
+###################################################################################################
+
+ssh_agent_add_command : ssh-add
+ssh_agent_add_line    : '{{ ssh_agent_add_command }} {{ null_redirect  }}'
+ssh_agent_add_pem_line: '{{ ssh_agent_add_command }} {{ ssh_agent_ssh_home }}/*.pem {{ null_redirect }}'
+
+###################################################################################################

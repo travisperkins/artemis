@@ -1,0 +1,39 @@
+###################################################################################################
+
+network_loopback_name  : localhost
+network_loopback_domain: localdomain
+
+###################################################################################################
+
+network_ipv4_loopback_name   : '{{ network_loopback_name   }}'
+network_ipv4_loopback_domain : '{{ network_loopback_domain }}'
+network_ipv4_loopback_address: '{% if ansible_lo is defined and ansible_lo.ipv4 is defined and ansible_lo.ipv4.address is defined %}{{ ansible_lo.ipv4.address }}{% else %}{{ network_ipv4_loopback_default }}{% endif %}'
+network_ipv4_loopback_default: 127.0.0.1
+
+###################################################################################################
+
+network_ipv6: false
+
+###################################################################################################
+
+network_ipv6_compressor: '::'
+network_ipv6_link_mcast: ff02
+
+###################################################################################################
+
+network_ipv6_loopback_name   : '{{ network_loopback_name   }}'
+network_ipv6_loopback_domain : '{{ network_loopback_domain }}'
+network_ipv6_loopback_address: '{% if ansible_lo is defined and ansible_lo.ipv6 is defined and ansible_lo.ipv6[0] is defined and ansible_lo.ipv6[0].address is defined %}{{ ansible_lo.ipv6[0].address }}{% else %}{{ network_ipv6_loopback_default }}{% endif %}'
+network_ipv6_loopback_default: '{{ network_ipv6_compressor }}1'
+
+###################################################################################################
+
+network_ipv6_link_mcast_allnodes_name   : allnodes
+network_ipv6_link_mcast_allnodes_address: '{{ network_ipv6_link_mcast }}{{ network_ipv6_compressor }}1'
+
+###################################################################################################
+
+network_ipv6_link_mcast_allrouters_name   : allrouters
+network_ipv6_link_mcast_allrouters_address: '{{ network_ipv6_link_mcast }}{{ network_ipv6_compressor }}2'
+
+###################################################################################################

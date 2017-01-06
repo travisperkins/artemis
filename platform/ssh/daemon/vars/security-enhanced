@@ -1,0 +1,18 @@
+###################################################################################################
+
+sshd_hostkeys:
+
+  - ed25519
+
+###################################################################################################
+
+sshd_macs               : hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+sshd_ciphers            : chacha20-poly1305@openssh.com
+sshd_maxsessions        : 2
+sshd_maxstartups        : 2
+sshd_maxauthtries       : 2
+sshd_kexalgorithms      : curve25519-sha256@libssh.org
+sshd_logingracetime     : 30
+sshd_clientaliveinterval: 10
+
+###################################################################################################

@@ -1,0 +1,69 @@
+###
+### {{ ansible_managed }}
+###
+
+###################################################################################################
+
+Port     {{ sshd_port     }}
+Protocol {{ sshd_protocol }}
+
+###################################################################################################
+
+{% for key in sshd_hostkeys %}
+HostKey {{ sshd_hostkey_prefix }}{{ key }}{{ sshd_hostkey_suffix }}
+{% endfor %}
+
+###################################################################################################
+
+RSAAuthentication               {{ sshd_rsaauthentication               }}
+GSSAPIAuthentication            {{ sshd_gssapiauthentication            }}
+PubkeyAuthentication            {{ sshd_pubkeyauthentication            }}
+KerberosAuthentication          {{ sshd_kerberosauthentication          }}
+PasswordAuthentication          {{ sshd_passwordauthentication          }}
+HostbasedAuthentication         {{ sshd_hostbasedauthentication         }}
+RhostsRSAAuthentication         {{ sshd_rhostsrsaauthentication         }}
+KbdInteractiveAuthentication    {{ sshd_kbdinteractiveauthentication    }}
+ChallengeResponseAuthentication {{ sshd_challengeresponseauthentication }}
+
+###################################################################################################
+
+MACs                   {{ sshd_macs                   }}
+{% if issue | bool %}
+Banner                 {{ sshd_banner                 }}
+{% endif %}
+UseDNS                 {{ sshd_usedns                 }}
+UsePAM                 {{ sshd_usepam                 }}
+Ciphers                {{ sshd_ciphers                }}
+LogLevel               {{ sshd_loglevel               }}
+AcceptEnv              {{ sshd_acceptenv              }}
+PrintMotd              {{ sshd_printmotd              }}
+{% if sshd_allowusers is not none and sshd_allowusers | length > 0 %}
+AllowUsers             {{ sshd_allowusers             }}
+{% endif %}
+{% if sshd_allowgroups is not none and sshd_allowgroups | length > 0 %}
+AllowGroups            {{ sshd_allowgroups            }}
+{% endif %}
+Compression            {{ sshd_compression            }}
+MaxSessions            {{ sshd_maxsessions            }}
+MaxStartups            {{ sshd_maxstartups            }}
+StrictModes            {{ sshd_strictmodes            }}
+MaxAuthTries           {{ sshd_maxauthtries           }}
+PermitTunnel           {{ sshd_permittunnel           }}
+PrintLastLog           {{ sshd_printlastlog           }}
+TCPKeepAlive           {{ sshd_tcpkeepalive           }}
+AddressFamily          {{ sshd_addressfamily          }}
+KexAlgorithms          {{ sshd_kexalgorithms          }}
+X11Forwarding          {{ sshd_x11forwarding          }}
+LoginGraceTime         {{ sshd_logingracetime         }}
+PermitRootLogin        {{ sshd_permitrootlogin        }}
+AllowTcpForwarding     {{ sshd_allowtcpforwarding     }}
+ClientAliveCountMax    {{ sshd_clientalivecountmax    }}
+ClientAliveInterval    {{ sshd_clientaliveinterval    }}
+AllowAgentForwarding   {{ sshd_allowagentforwarding   }}
+UsePrivilegeSeparation {{ sshd_useprivilegeseparation }}
+
+###################################################################################################
+
+Subsystem sftp {{ sshd_sftp }}
+
+###################################################################################################

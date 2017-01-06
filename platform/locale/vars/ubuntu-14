@@ -1,0 +1,19 @@
+###################################################################################################
+
+locale_base: '{{ etc_base }}/default'
+
+###################################################################################################
+
+locale_locale_key    : LANG
+locale_locale_dest   : '{{ locale_base       }}/locale'
+locale_locale_search : ^{{ locale_locale_key }}=
+locale_locale_replace: '{{ locale_locale_key }}={{ locale_locale }}'
+
+###################################################################################################
+
+locale_layout_key    : XKBLAYOUT
+locale_layout_dest   : '{{ locale_base       }}/keyboard'
+locale_layout_search : ^{{ locale_layout_key }}=
+locale_layout_replace: '{{ locale_layout_key }}=\"{{ locale_layout }}\"'
+
+###################################################################################################

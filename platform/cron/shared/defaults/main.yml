@@ -1,0 +1,42 @@
+###################################################################################################
+
+cron_word: cron
+
+###################################################################################################
+
+cron_base : '{{ etc_base   }}/{{ cron_word }}'
+cron_owner: '{{ root_user  }}'
+cron_group: '{{ cron_owner }}'
+
+###################################################################################################
+
+cron_file_mode : '0600'
+cron_file_owner: '{{ cron_owner }}'
+cron_file_group: '{{ cron_group }}'
+
+###################################################################################################
+
+cron_dir_mode   : '0700'
+cron_dir_owner  : '{{ cron_owner }}'
+cron_dir_group  : '{{ cron_group }}'
+cron_dir_recurse: true
+
+###################################################################################################
+
+cron_allow      : false
+cron_allow_file : '{{ cron_base       }}.allow'
+cron_allow_mode : '{{ cron_file_mode  }}'
+cron_allow_owner: '{{ cron_file_owner }}'
+cron_allow_group: '{{ cron_file_group }}'
+cron_allow_state: '{% if cron_allow %}file{% else %}absent{% endif %}'
+
+###################################################################################################
+
+cron_deny      : true
+cron_deny_file : '{{ cron_base       }}.deny'
+cron_deny_mode : '{{ cron_file_mode  }}'
+cron_deny_owner: '{{ cron_file_owner }}'
+cron_deny_group: '{{ cron_file_group }}'
+cron_deny_state: '{% if cron_deny %}file{% else %}absent{% endif %}'
+
+###################################################################################################

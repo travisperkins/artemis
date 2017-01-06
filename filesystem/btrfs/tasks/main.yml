@@ -1,0 +1,243 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ os_family_lower }}'
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - btrfs_label is defined
+      - btrfs_label is not none
+      - btrfs_label | length > 0
+
+      - btrfs_devices is defined
+      - btrfs_devices is not none
+      - btrfs_devices | length > 0
+
+      - btrfs_compress is not none
+      - btrfs_compress in ['no', 'lzo', 'zlib']
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: debian | dependencies
+
+  when: os_family_is_debian
+
+  become: true
+
+  with_items: btrfs_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+    - debian
+
+###################################################################################################
+
+- name: redhat | dependencies
+
+  when: os_family_is_redhat
+
+  become: true
+
+  with_items: btrfs_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+    - redhat
+
+###################################################################################################
+
+- name: mkfs
+
+  become: true
+
+  command: mkfs.{{ btrfs_base_command }} --label {{ btrfs_label }} --metadata {{ btrfs_meta }} --data {{ btrfs_data }} {{ btrfs_devices_flat }}
+
+  register: mkfs
+
+  changed_when: mkfs.rc == 0
+  failed_when : mkfs.rc != 0 and 'existing filesystem (btrfs)' not in mkfs.stderr
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: scan
+
+  become: true
+
+  command: '{{ btrfs_base_command }} device scan --all-devices'
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: mount
+
+  become: true
+
+  mount: src=LABEL={{ btrfs_label }}
+        name={{       btrfs_mount }}
+        opts={{       btrfs_opts  }}
+        dump={{       btrfs_dump  }}
+      passno={{       btrfs_pass  }}
+      fstype={{       btrfs_name  }}
+       state=mounted
+
+  register: mount
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: mount | access
+
+  when: btrfs_mount_access
+
+  become: true
+
+  file: owner={{ btrfs_mount_user  }}
+        group={{ btrfs_mount_group }}
+         mode={{ btrfs_mount_mode  }}
+         path={{ btrfs_mount       }}
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: signal
+
+  when: mount.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: blkid
+
+  become: true
+
+  command: blkid -t LABEL={{ btrfs_label }} -n {{ btrfs_name }} -o device
+
+  changed_when: false
+
+  register: blkid
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: add
+
+  when: item not in blkid.stdout
+
+  become: true
+
+  with_items: btrfs_devices
+
+  command: '{{ btrfs_base_command }} device add {{ item }} {{ btrfs_mount }}'
+
+  notify: balance
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: remove
+
+  when: item not in btrfs_devices
+
+  become: true
+
+  with_items: blkid.stdout_lines
+
+  command: '{{ btrfs_base_command }} device delete {{ item }} {{ btrfs_mount }}'
+
+  notify: balance
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################
+
+- name: cron | balance
+
+  when: btrfs_balance
+
+  become: true
+
+  cron: name={{  btrfs_balance_name    }}
+         job='{{ btrfs_balance_command }} -musage={{ btrfs_balance_meta }} -dusage={{ btrfs_balance_data }} {{ btrfs_mount }} {{ null_redirect }}'
+      minute={{  btrfs_balance_min     }}
+        hour={{  btrfs_balance_hour    }}
+
+  tags:
+    - artemis
+    - filesystem
+    - btrfs
+
+###################################################################################################

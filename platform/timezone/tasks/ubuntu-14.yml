@@ -1,0 +1,70 @@
+###################################################################################################
+
+- name: ubuntu | 14 | clock
+
+  become: true
+
+  lineinfile: dest={{ timezone_clock_dest    }}
+            regexp={{ timezone_clock_search  }}
+              line={{ timezone_clock_replace }}
+
+  register: clock
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - ubuntu-14
+
+###################################################################################################
+
+- name: ubuntu | 14 | zone
+
+  become: true
+
+  template: src={{ timezone_zone_src  }}
+           dest={{ timezone_zone_dest }}
+           mode={{ timezone_zone_mode }}
+
+  register: zone
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - ubuntu-14
+
+###################################################################################################
+
+- name: ubuntu | 14 | configure
+
+  when: clock.changed
+     or zone.changed
+
+  become: true
+
+  command: '{{ timezone_reconfigure_command }}'
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - ubuntu-14
+
+###################################################################################################
+
+- name: ubuntu | 14 | signal
+
+  when: clock.changed
+     or zone.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - timezone
+    - ubuntu-14
+
+###################################################################################################

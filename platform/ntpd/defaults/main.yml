@@ -1,0 +1,133 @@
+###################################################################################################
+
+ntpd_base: '{{ etc_base }}'
+
+###################################################################################################
+
+ntpd_src : config.j2
+ntpd_dest: '{{ ntpd_base }}/ntp.conf'
+ntpd_mode: '0644'
+
+###################################################################################################
+
+ntpd_port : 123
+ntpd_proto: udp
+
+###################################################################################################
+
+ntpd_driftfile: '{{ var_lib_base }}/ntp/drift'
+ntpd_logconfig: =allstatus +syncall
+
+###################################################################################################
+
+ntpd_date_force  : false
+ntpd_date_bypass : false
+ntpd_date_samples: 4
+ntpd_date_command: ntpdate -bup {{ ntpd_date_samples }} {{ ntpd_servers_flat }}{{ ntpd_pools_flat }}
+
+###################################################################################################
+
+ntpd_servers_flat       : '{% if ntpd_servers is defined and ntpd_servers is not none and ntpd_servers | length > 0 %}{% for item in ntpd_servers %}{{ item }}{% if not loop.last %} {% endif %}{% endfor %}{% endif %}'
+ntpd_servers_is_supplied: (ntpd_servers is defined and ntpd_servers is not none and ntpd_servers | length > 0)
+ntpd_servers_exclusive  : true
+
+###################################################################################################
+
+ntpd_pools:
+
+  - 0.uk.pool.ntp.org
+  - 1.uk.pool.ntp.org
+  - 2.uk.pool.ntp.org
+  - 3.uk.pool.ntp.org
+
+ntpd_pools_flat       : '{% if ntpd_pools is defined and ntpd_pools is not none and ntpd_pools | length > 0 %}{% for item in ntpd_pools %}{% if not loop.first %} {% endif %}{{ item }}{% endfor %}{% endif %}'
+ntpd_pools_is_supplied: (ntpd_pools is defined and ntpd_pools is not none and ntpd_pools | length > 0)
+ntpd_pools_exclusive  : false
+
+###################################################################################################
+
+ntpd_source_is_supplied   : ({{ ntpd_servers_is_supplied }} or {{ ntpd_pools_is_supplied }})
+ntpd_source_is_exclusivity: (not (ntpd_servers_exclusive and ntpd_pools_exclusive))
+
+###################################################################################################
+
+ntpd_source_burst     : false
+ntpd_source_burst_word: burst
+ntpd_source_burst_flag: '{% if ntpd_source_burst | bool %} {{ ntpd_source_burst_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_source_iburst     : true
+ntpd_source_iburst_word: iburst
+ntpd_source_iburst_flag: '{% if ntpd_source_iburst | bool %} {{ ntpd_source_iburst_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_source_flags: '{{ ntpd_source_burst_flag }}{{ ntpd_source_iburst_flag }}'
+
+###################################################################################################
+
+ntpd_discard_average: 5
+ntpd_discard_minimum: 2
+
+###################################################################################################
+
+ntpd_restrict_limited_word        : limited
+ntpd_restrict_limited_local       : false
+ntpd_restrict_limited_default     : false
+ntpd_restrict_limited_flag_local  : '{% if ntpd_restrict_limited_local   | bool %} {{ ntpd_restrict_limited_word }}{% endif %}'
+ntpd_restrict_limited_flag_default: '{% if ntpd_restrict_limited_default | bool %} {{ ntpd_restrict_limited_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_restrict_kod_word        : kod
+ntpd_restrict_kod_local       : true
+ntpd_restrict_kod_default     : true
+ntpd_restrict_kod_flag_local  : '{% if ntpd_restrict_kod_local   | bool and ntpd_restrict_limited_local   | bool %} {{ ntpd_restrict_kod_word }}{% endif %}'
+ntpd_restrict_kod_flag_default: '{% if ntpd_restrict_kod_default | bool and ntpd_restrict_limited_default | bool %} {{ ntpd_restrict_kod_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_restrict_trap_word        : notrap
+ntpd_restrict_trap_source      : false
+ntpd_restrict_trap_local       : false
+ntpd_restrict_trap_default     : false
+ntpd_restrict_trap_flag_source : '{% if not ntpd_restrict_trap_source  | bool %} {{ ntpd_restrict_trap_word }}{% endif %}'
+ntpd_restrict_trap_flag_local  : '{% if not ntpd_restrict_trap_local   | bool %} {{ ntpd_restrict_trap_word }}{% endif %}'
+ntpd_restrict_trap_flag_default: '{% if not ntpd_restrict_trap_default | bool %} {{ ntpd_restrict_trap_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_restrict_query_word        : noquery
+ntpd_restrict_query_source      : false
+ntpd_restrict_query_local       : true
+ntpd_restrict_query_default     : false
+ntpd_restrict_query_flag_source : '{% if not ntpd_restrict_query_source  | bool %} {{ ntpd_restrict_query_word }}{% endif %}'
+ntpd_restrict_query_flag_local  : '{% if not ntpd_restrict_query_local   | bool %} {{ ntpd_restrict_query_word }}{% endif %}'
+ntpd_restrict_query_flag_default: '{% if not ntpd_restrict_query_default | bool %} {{ ntpd_restrict_query_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_restrict_modify_word        : nomodify
+ntpd_restrict_modify_source      : false
+ntpd_restrict_modify_local       : true
+ntpd_restrict_modify_default     : false
+ntpd_restrict_modify_flag_source : '{% if not ntpd_restrict_modify_source  | bool %} {{ ntpd_restrict_modify_word }}{% endif %}'
+ntpd_restrict_modify_flag_local  : '{% if not ntpd_restrict_modify_local   | bool %} {{ ntpd_restrict_modify_word }}{% endif %}'
+ntpd_restrict_modify_flag_default: '{% if not ntpd_restrict_modify_default | bool %} {{ ntpd_restrict_modify_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_restrict_peer_word        : nopeer
+ntpd_restrict_peer_local       : false
+ntpd_restrict_peer_default     : true
+ntpd_restrict_peer_flag_local  : '{% if not (ntpd_restrict_peer_local   | bool and ntpd_peers is defined and ntpd_peers is not none and ntpd_peers | length > 0) %} {{ ntpd_restrict_peer_word }}{% endif %}'
+ntpd_restrict_peer_flag_default: '{% if not (ntpd_restrict_peer_default | bool and ntpd_peers is defined and ntpd_peers is not none and ntpd_peers | length > 0) %} {{ ntpd_restrict_peer_word }}{% endif %}'
+
+###################################################################################################
+
+ntpd_restrict_source : '{{ ntpd_restrict_trap_flag_source     }}{{ ntpd_restrict_query_flag_source }}{{ ntpd_restrict_modify_flag_source }}'
+ntpd_restrict_local  : '{{ ntpd_restrict_limited_flag_local   }}{{ ntpd_restrict_kod_flag_local    }}{{ ntpd_restrict_trap_flag_local    }}{{ ntpd_restrict_query_flag_local   }}{{ ntpd_restrict_modify_flag_local   }}{{ ntpd_restrict_peer_flag_local   }}'
+ntpd_restrict_default: '{{ ntpd_restrict_limited_flag_default }}{{ ntpd_restrict_kod_flag_default  }}{{ ntpd_restrict_trap_flag_default  }}{{ ntpd_restrict_query_flag_default }}{{ ntpd_restrict_modify_flag_default }}{{ ntpd_restrict_peer_flag_default }}'
+
+###################################################################################################

@@ -1,0 +1,58 @@
+###################################################################################################
+
+motd_file: motd
+motd_src : '{{ motd_file }}.j2'
+motd_dest: '{{ etc_base  }}/{{ motd_file }}'
+motd_mode: '0644'
+
+###################################################################################################
+
+motd_true : Active
+motd_false: Inactive
+
+###################################################################################################
+
+motd_identity_host   : '{{ ansible_hostname              }}'
+motd_identity_fqdn   : '{{ ansible_fqdn                  }}'
+motd_identity_display: '{{ not (dynamic_identity | bool) }}'
+
+###################################################################################################
+
+motd_artemis: '{{ version }} ({{ security_mode | capitalize }}){% if overrides_verified %} ({{ overrides_word | capitalize }}){% endif %}{% if managed.stat.exists %} (Managed){% endif %}'
+
+###################################################################################################
+
+motd_hardware_display: '{{ not (dynamic_hardware | bool) }}'
+
+###################################################################################################
+
+motd_tz_display    : true
+motd_tz_zone_value : '{{ timezone           }}'
+motd_tz_clock_value: '{{ timezone_clock_utc }}'
+
+###################################################################################################
+
+motd_features_display: true
+
+###################################################################################################
+
+motd_firewall_display: true
+motd_firewall_true   : '{{ motd_true  }}'
+motd_firewall_false  : '{{ motd_false }}'
+motd_firewall_value  : '{% if firewall_enabled | bool %}{{ motd_firewall_true }}{% else %}{{ motd_firewall_false }}{% endif %}'
+
+###################################################################################################
+
+motd_ipv6_display: true
+motd_ipv6_true   : '{{ motd_true  }}'
+motd_ipv6_false  : '{{ motd_false }}'
+motd_ipv6_value  : '{% if network_ipv6 | bool %}{{ motd_ipv6_true }}{% else %}{{ motd_ipv6_false }}{% endif %}'
+
+###################################################################################################
+
+motd_mac_display: true
+motd_mac_true   : '{{ motd_true  }}'
+motd_mac_false  : '{{ motd_false }}'
+motd_mac_value  : '{% if mac_enabled | bool %}{{ motd_mac_true }}{% else %}{{ motd_mac_false }}{% endif %}'
+
+###################################################################################################

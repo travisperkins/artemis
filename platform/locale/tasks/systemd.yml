@@ -1,0 +1,90 @@
+###################################################################################################
+
+- name: systemd | status
+
+  become: true
+
+  command: '{{ locale_status_command }}'
+
+  changed_when: false
+
+  register: status
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - systemd
+
+###################################################################################################
+
+- name: systemd | locale
+
+  when: "'System Locale: LANG={{ locale_locale }}' not in status.stdout"
+
+  become: true
+
+  command: '{{ locale_locale_command }}'
+
+  register: locale
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - systemd
+
+###################################################################################################
+
+- name: systemd | keymap
+
+  when: "'VC Keymap: {{ locale_keymap }}' not in status.stdout"
+
+  become: true
+
+  command: '{{ locale_keymap_command }}'
+
+  register: keymap
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - systemd
+
+###################################################################################################
+
+- name: systemd | layout
+
+  when: "'X11 Layout: {{ locale_layout }}' not in status.stdout"
+
+  become: true
+
+  command: '{{ locale_layout_command }}'
+
+  register: layout
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - systemd
+
+###################################################################################################
+
+- name: systemd | signal
+
+  when: locale.changed
+     or keymap.changed
+     or layout.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - systemd
+
+###################################################################################################

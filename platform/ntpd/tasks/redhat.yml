@@ -1,0 +1,50 @@
+###################################################################################################
+
+- name: redhat | dependencies
+
+  become: true
+
+  with_items: ntpd_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - redhat
+
+###################################################################################################
+
+- name: redhat | firewall
+
+  when: firewall_enabled
+
+  become: true
+
+  firewalld: port={{ ntpd_port }}/{{ ntpd_proto }} state=enabled permanent=true
+
+  register: firewall
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - redhat
+
+###################################################################################################
+
+- name: redhat | signal
+
+  when: firewall.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - redhat
+
+###################################################################################################

@@ -1,0 +1,38 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - cron_allow_user is not none
+      - cron_allow_user | length > 0
+
+      - cron_allow_user_state in ['present', 'absent']
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - allow
+
+###################################################################################################
+
+- name: allow
+
+  when: cron_allow
+    and cron_allow_user != root_user
+
+  become: true
+
+  lineinfile: dest={{ cron_allow_file       }}
+              line={{ cron_allow_user       }}
+             state={{ cron_allow_user_state }}
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - allow
+
+###################################################################################################

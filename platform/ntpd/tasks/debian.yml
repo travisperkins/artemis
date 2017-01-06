@@ -1,0 +1,33 @@
+###################################################################################################
+
+- name: debian | dependencies
+
+  become: true
+
+  with_items: ntpd_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - debian
+
+###################################################################################################
+
+- name: debian | firewall
+
+  become: true
+
+  ufw : port={{ ntpd_port  }}
+       proto={{ ntpd_proto }}
+        rule=allow
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - debian
+
+###################################################################################################

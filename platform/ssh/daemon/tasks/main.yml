@@ -1,0 +1,154 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ os_family_lower }}'
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: import | security | balanced
+
+  when: security_mode_inc_balanced
+
+  include_vars: '{{ security_word }}-{{ security_mode_balanced }}'
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: import | security | enhanced
+
+  when: security_mode_inc_enhanced
+
+  include_vars: '{{ security_word }}-{{ security_mode_enhanced }}'
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: enable
+
+  become: true
+
+  service: name={{ sshd_service }} enabled=true
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: configure
+
+  become: true
+
+  template: src={{ sshd_src  }}
+           dest={{ sshd_dest }}
+           mode={{ sshd_mode }}
+
+  register: configure
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: check
+
+  become: true
+
+  command: '{{ sshd_check }}'
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: restart
+
+  when: configure.changed
+    and not sshd_bounce_prevention
+
+  become: true
+
+  service: name={{ sshd_service }} state=restarted
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: wait
+
+  when: configure.changed
+    and not sshd_bounce_prevention
+
+  become: false
+
+  local_action: wait_for host={{ sshd_host  }}
+                         port={{ sshd_port  }}
+                        delay={{ sshd_delay }}
+                        state=started
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################
+
+- name: start
+
+  become: true
+
+  service: name={{ sshd_service }} state=started
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - daemon
+
+###################################################################################################

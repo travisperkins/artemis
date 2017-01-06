@@ -1,0 +1,98 @@
+###################################################################################################
+
+proxy_enabled: false
+
+###################################################################################################
+
+proxy_base: '{{ etc_base }}'
+proxy_mode: '0644'
+
+###################################################################################################
+
+proxy_secure   : false
+proxy_transport: '{% if proxy_secure | bool %}{{ uri_scheme_https }}{% else %}{{ uri_scheme_http }}{% endif %}'
+
+###################################################################################################
+
+proxy_http_protocol: '{{ proxy_transport }}'
+proxy_http_env_name: http_proxy
+
+###################################################################################################
+
+proxy_https_protocol: '{{ proxy_transport }}'
+proxy_https_env_name: https_proxy
+
+###################################################################################################
+
+proxy_all_protocol: '{{ proxy_transport }}'
+proxy_all_env_name: all_proxy
+
+###################################################################################################
+
+proxy_ignore_env_name: no_proxy
+proxy_ignore_masks   :
+
+###################################################################################################
+
+proxy_env_file  : '{{ proxy_base }}/environment'
+proxy_env_prefix: 'export '
+proxy_env_lines :
+
+  - name : '{{ proxy_http_env_name   | lower     }}'
+    value: '{{ proxy_http_endpoint   | default() }}'
+  - name : '{{ proxy_http_env_name   | upper     }}'
+    value: '{{ proxy_http_endpoint   | default() }}'
+
+  - name : '{{ proxy_https_env_name  | lower     }}'
+    value: '{{ proxy_https_endpoint  | default() }}'
+  - name : '{{ proxy_https_env_name  | upper     }}'
+    value: '{{ proxy_https_endpoint  | default() }}'
+
+  - name : '{{ proxy_all_env_name    | lower     }}'
+    value: '{{ proxy_all_endpoint    | default() }}'
+  - name : '{{ proxy_all_env_name    | upper     }}'
+    value: '{{ proxy_all_endpoint    | default() }}'
+
+  - name : '{{ proxy_ignore_env_name | lower     }}'
+    value: '{{ proxy_ignore_mask     | default() }}'
+  - name : '{{ proxy_ignore_env_name | upper     }}'
+    value: '{{ proxy_ignore_mask     | default() }}'
+
+###################################################################################################
+
+proxy_sudoers_file    : '{{ proxy_base }}/sudoers'
+proxy_sudoers_prefix  : Defaults env_keep +=
+proxy_sudoers_validate: visudo -cf %s
+proxy_sudoers_lines   :
+
+  - '{{ proxy_http_env_name   | lower }}'
+  - '{{ proxy_http_env_name   | upper }}'
+
+  - '{{ proxy_https_env_name  | lower }}'
+  - '{{ proxy_https_env_name  | upper }}'
+
+  - '{{ proxy_all_env_name    | lower }}'
+  - '{{ proxy_all_env_name    | upper }}'
+
+  - '{{ proxy_ignore_env_name | lower }}'
+  - '{{ proxy_ignore_env_name | upper }}'
+
+  - '{{ proxy_pac_env_name    | lower }}'
+  - '{{ proxy_pac_env_name    | upper }}'
+
+###################################################################################################
+
+proxy_pac_enabled       : false
+proxy_pac_local         : '{{ proxy_pac_enabled    }}'
+proxy_pac_local_file    : '{{ proxy_base           }}/proxy.pac'
+proxy_pac_local_download: '{{ proxy_pac_local_file }}.download'
+proxy_pac_local_url     : file://{{ proxy_pac_local_file }}
+proxy_pac_env_name      : auto_proxy
+proxy_pac_env_lines     :
+
+  - name : '{{ proxy_pac_env_name | lower     }}'
+    value: '{{ proxy_pac_endpoint | default() }}'
+  - name : '{{ proxy_pac_env_name | upper     }}'
+    value: '{{ proxy_pac_endpoint | default() }}'
+
+###################################################################################################

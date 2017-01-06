@@ -1,0 +1,13 @@
+###################################################################################################
+
+proxy_apt_file : '{{ proxy_base }}/apt/apt.conf.d/00proxy'
+proxy_apt_mode : '{{ proxy_mode }}'
+proxy_apt_lines:
+
+  - name : Acquire::http::Proxy
+    value: '{{ proxy_http_endpoint  | default() }}'
+
+  - name : Acquire::https::Proxy
+    value: '{{ proxy_https_endpoint | default() }}'
+
+###################################################################################################

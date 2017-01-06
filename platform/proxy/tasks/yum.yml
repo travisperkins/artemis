@@ -1,0 +1,45 @@
+###################################################################################################
+
+- name: yum | configure
+
+  when: proxy_enabled
+
+  become: true
+
+  with_items: proxy_yum_lines
+
+  lineinfile: dest='{{ proxy_yum_file }}'
+              mode='{{ proxy_yum_mode }}'
+            regexp='{{ item.name      }}'
+              line='{{ item.name      }}={{ item.value }}'
+       insertafter='{{ item.after     }}'
+            create=yes
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - yum
+
+###################################################################################################
+
+- name: yum | unconfigure
+
+  when: not proxy_enabled
+
+  become: true
+
+  with_items: proxy_yum_lines
+
+  lineinfile: dest='{{ proxy_yum_file }}'
+              mode='{{ proxy_yum_mode }}'
+            regexp='{{ item.name      }}='
+             state=absent
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - yum
+
+###################################################################################################

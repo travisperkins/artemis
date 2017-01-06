@@ -1,0 +1,39 @@
+###################################################################################################
+
+- name: debian | dependencies
+
+  when: os_family_is_debian
+
+  become: true
+
+  with_items: lvm_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - volume
+    - lvm
+    - common
+    - debian
+
+###################################################################################################
+
+- name: redhat | dependencies
+
+  when: os_family_is_redhat
+
+  become: true
+
+  with_items: lvm_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - volume
+    - lvm
+    - common
+    - redhat
+
+###################################################################################################

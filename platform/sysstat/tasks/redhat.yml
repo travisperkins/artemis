@@ -1,0 +1,17 @@
+###################################################################################################
+
+- name: redhat | dependencies
+
+  become: true
+
+  with_items: sysstat_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - platform
+    - sysstat
+    - redhat
+
+###################################################################################################

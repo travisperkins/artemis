@@ -1,0 +1,23 @@
+###################################################################################################
+
+sshd_hostkeys:
+
+  - ed25519
+  - rsa
+
+###################################################################################################
+
+sshd_macs               : hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
+sshd_usedns             : '{{ sshd_true }}'
+sshd_ciphers            : chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+sshd_loglevel           : VERBOSE
+sshd_maxsessions        : 6
+sshd_maxstartups        : 6
+sshd_maxauthtries       : 4
+sshd_tcpkeepalive       : '{{ sshd_false }}'
+sshd_kexalgorithms      : curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+sshd_logingracetime     : 60
+sshd_permitrootlogin    : '{{ sshd_false }}'
+sshd_clientaliveinterval: 20
+
+###################################################################################################

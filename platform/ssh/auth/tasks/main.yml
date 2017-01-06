@@ -1,0 +1,36 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - ssh_key_name is defined
+      - ssh_key_name is not none
+      - ssh_key_name | length > 0
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - auth
+
+###################################################################################################
+
+- name: authorise
+
+  become: true
+
+  with_file:
+    - '{{ ssh_key_file }}'
+
+  authorized_key: user={{  ssh_user }}
+                   key='{{ item     }}'
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - auth
+
+###################################################################################################

@@ -1,0 +1,60 @@
+###################################################################################################
+
+cron_package: '{{ cron_word    }}'
+cron_service: '{{ cron_package }}'
+
+###################################################################################################
+
+cron_dependencies:
+
+  - '{{ cron_package }}'
+
+###################################################################################################
+
+cron_tab_file : '{{ cron_base       }}tab'
+cron_tab_mode : '{{ cron_file_mode  }}'
+cron_tab_owner: '{{ cron_file_owner }}'
+cron_tab_group: '{{ cron_file_group }}'
+cron_tab_state: file
+
+###################################################################################################
+
+cron_d_dir    : '{{ cron_base        }}.d'
+cron_d_mode   : '{{ cron_dir_mode    }}'
+cron_d_owner  : '{{ cron_dir_owner   }}'
+cron_d_group  : '{{ cron_dir_group   }}'
+cron_d_recurse: '{{ cron_dir_recurse }}'
+
+###################################################################################################
+
+cron_hourly_dir    : '{{ cron_base        }}.hourly'
+cron_hourly_mode   : '{{ cron_dir_mode    }}'
+cron_hourly_owner  : '{{ cron_dir_owner   }}'
+cron_hourly_group  : '{{ cron_dir_group   }}'
+cron_hourly_recurse: '{{ cron_dir_recurse }}'
+
+###################################################################################################
+
+cron_daily_dir    : '{{ cron_base        }}.daily'
+cron_daily_mode   : '{{ cron_dir_mode    }}'
+cron_daily_owner  : '{{ cron_dir_owner   }}'
+cron_daily_group  : '{{ cron_dir_group   }}'
+cron_daily_recurse: '{{ cron_dir_recurse }}'
+
+###################################################################################################
+
+cron_weekly_dir    : '{{ cron_base        }}.weekly'
+cron_weekly_mode   : '{{ cron_dir_mode    }}'
+cron_weekly_owner  : '{{ cron_dir_owner   }}'
+cron_weekly_group  : '{{ cron_dir_group   }}'
+cron_weekly_recurse: '{{ cron_dir_recurse }}'
+
+###################################################################################################
+
+cron_monthly_dir    : '{{ cron_base        }}.monthly'
+cron_monthly_mode   : '{{ cron_dir_mode    }}'
+cron_monthly_owner  : '{{ cron_dir_owner   }}'
+cron_monthly_group  : '{{ cron_dir_group   }}'
+cron_monthly_recurse: '{{ cron_dir_recurse }}'
+
+###################################################################################################

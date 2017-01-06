@@ -1,0 +1,17 @@
+###################################################################################################
+
+- name: debian | dependencies
+
+  become: true
+
+  with_items: mac_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - platform
+    - mac
+    - debian
+
+###################################################################################################

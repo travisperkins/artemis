@@ -1,0 +1,36 @@
+###################################################################################################
+
+dependencies:
+
+  -   role: platform/ping
+
+  -   role: platform/hostname
+  -   role: platform/hosts
+
+  -   role: platform/proxy
+
+  -   role: platform/package/manager
+  -   role: platform/package/patch
+
+  -   role: kernel/sysctl
+  -   role: network/ipv6
+
+  -   role: platform/su
+  -   role: platform/dac
+  -   role: platform/mac
+  -   role: platform/issue
+  -   role: platform/locale
+  -   role: platform/timezone
+
+  -   role: platform/sysstat
+
+  - { role: boot/grub/control, caller: '{{ server_bounce_caller }}' }
+  - { role: platform/bounce,   caller: '{{ server_bounce_caller }}' }
+
+  -   role: platform/firewall
+
+  -   role: platform/ntpd
+  -   role: platform/ssh/daemon
+  -   role: platform/cron/daemon
+
+###################################################################################################

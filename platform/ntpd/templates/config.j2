@@ -1,0 +1,54 @@
+###
+### {{ ansible_managed }}
+###
+
+###################################################################################################
+
+driftfile {{ ntpd_driftfile }}
+logconfig {{ ntpd_logconfig }}
+
+{% if ntpd_servers is defined and ntpd_servers is not none and ntpd_servers | length > 0 and not (ntpd_pools is defined and ntpd_pools is not none and ntpd_pools | length > 0 and ntpd_pools_exclusive | bool) %}
+###################################################################################################
+
+{% for item in ntpd_servers %}
+server {{ item }}{{ ntpd_source_flags }}
+{% endfor %}
+
+{% endif %}
+{% if ntpd_pools is defined and ntpd_pools is not none and ntpd_pools | length > 0 and not (ntpd_servers is defined and ntpd_servers is not none and ntpd_servers | length > 0 and ntpd_servers_exclusive | bool) %}
+###################################################################################################
+
+{% for item in ntpd_pools %}
+pool {{ item }}{{ ntpd_source_flags }}
+{% endfor %}
+
+{% endif %}
+{% if ntpd_peers is defined and ntpd_peers is not none and ntpd_peers | length > 0 %}
+###################################################################################################
+
+{% for item in ntpd_peers %}
+peer {{ item }}{{ ntpd_source_flags }}
+{% endfor %}
+
+{% endif %}
+{% if ntpd_restrict_limited_local | bool or ntpd_restrict_limited_default | bool %}
+###################################################################################################
+
+discard average {{ ntpd_discard_average }} minimum {{ ntpd_discard_minimum }}
+
+{% endif %}
+###################################################################################################
+
+restrict source{{ ntpd_restrict_source }}
+
+restrict -4 {{ network_ipv4_loopback_address }}{{ ntpd_restrict_local }}
+restrict -4 default{{ ntpd_restrict_default }}
+
+{% if network_ipv6 | bool %}
+restrict -6 {{ network_ipv6_loopback_address }}{{ ntpd_restrict_local }}
+restrict -6 default{{ ntpd_restrict_default }}
+{% else %}
+restrict -6 default ignore
+{% endif %}
+
+###################################################################################################

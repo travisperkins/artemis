@@ -1,0 +1,58 @@
+###################################################################################################
+
+ext_version: 4
+
+###################################################################################################
+
+ext_vfs_type: ext{{ ext_version }}
+
+###################################################################################################
+
+ext_mkfs_opts : '-L {{ ext_label }}'
+ext_mkfs_force: false
+
+###################################################################################################
+
+ext_mount_spec : LABEL={{ ext_label   }}
+ext_mount_point: /{{ ext_label        }}
+ext_mount_opts : '{{ ext_mount_ro_opt }},{{ ext_mount_dev_opt }},{{ ext_mount_suid_opt }},{{ ext_mount_exec_opt }},{{ ext_mount_auto_opt }},{{ ext_mount_user_opt }},{{ ext_mount_atime_opt }}'
+ext_mount_dump : 1
+ext_mount_pass : 2
+ext_mount_state: mounted
+
+###################################################################################################
+
+ext_mount_ro    : false
+ext_mount_ro_opt: '{% if ext_mount_ro | bool %}ro{% else %}rw{% endif %}'
+
+###################################################################################################
+
+ext_mount_dev    : true
+ext_mount_dev_opt: '{% if ext_mount_dev | bool %}dev{% else %}nodev{% endif %}'
+
+###################################################################################################
+
+ext_mount_suid    : true
+ext_mount_suid_opt: '{% if ext_mount_suid | bool %}suid{% else %}nosuid{% endif %}'
+
+###################################################################################################
+
+ext_mount_exec    : true
+ext_mount_exec_opt: '{% if ext_mount_exec | bool %}exec{% else %}noexec{% endif %}'
+
+###################################################################################################
+
+ext_mount_auto    : true
+ext_mount_auto_opt: '{% if ext_mount_auto | bool %}auto{% else %}noauto{% endif %}'
+
+###################################################################################################
+
+ext_mount_user    : false
+ext_mount_user_opt: '{% if ext_mount_user | bool %}user{% else %}nouser{% endif %}'
+
+###################################################################################################
+
+ext_mount_atime    : false
+ext_mount_atime_opt: '{% if ext_mount_atime | bool %}atime{% else %}noatime{% endif %}'
+
+###################################################################################################

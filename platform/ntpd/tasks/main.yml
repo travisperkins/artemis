@@ -1,0 +1,201 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ os_family_lower }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: import | distribution
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ distribution_lower }}-{{ ansible_distribution_version }}'
+    - '{{ dev_null }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: import | security | balanced
+
+  when: security_mode_inc_balanced
+
+  include_vars: '{{ security_word }}-{{ security_mode_balanced }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: import | security | enhanced
+
+  when: security_mode_inc_enhanced
+
+  include_vars: '{{ security_word }}-{{ security_mode_enhanced }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - '{{ ntpd_source_is_supplied    }}'
+      - '{{ ntpd_source_is_exclusivity }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: debian
+
+  when: os_family_is_debian
+
+  include: debian.yml
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - debian
+
+###################################################################################################
+
+- name: redhat
+
+  when: os_family_is_redhat
+
+  include: redhat.yml
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - redhat
+
+###################################################################################################
+
+- name: managed | check
+
+  when: not ntpd_date_bypass
+
+  become: true
+
+  stat: path={{ managed_dest }} follow=true get_checksum=false get_md5=false
+
+  register: managed
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: date | set
+
+  when: ntpd_date_force
+    or (not ntpd_date_bypass
+    and not managed.stat.exists)
+
+  become: true
+
+  command: '{{ ntpd_date_command }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: enable
+
+  become: true
+
+  service: name={{ ntpd_service }} enabled=true
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: configure
+
+  become: true
+
+  template: src={{ ntpd_src  }}
+           dest={{ ntpd_dest }}
+           mode={{ ntpd_mode }}
+
+  register: configure
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: restart
+
+  when: configure.changed
+
+  become: true
+
+  service: name={{ ntpd_service }} state=restarted
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: start
+
+  become: true
+
+  service: name={{ ntpd_service }} state=started
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################

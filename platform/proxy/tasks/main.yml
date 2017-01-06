@@ -1,0 +1,181 @@
+###################################################################################################
+
+- name: import | package
+
+  include_vars: '{{ package_manager_lower }}'
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################
+
+- name: set | facts
+
+  when: proxy_host is defined
+    and proxy_host is not none
+    and proxy_host | length > 0
+
+    and proxy_port is defined
+    and proxy_port is not none
+    and proxy_port | string | length > 0
+
+  set_fact:
+    proxy_enabled       : true
+    proxy_http_endpoint : '{{ proxy_http_protocol  }}{{ proxy_host }}:{{ proxy_port }}'
+    proxy_https_endpoint: '{{ proxy_https_protocol }}{{ proxy_host }}:{{ proxy_port }}'
+    proxy_all_endpoint  : '{{ proxy_all_protocol   }}{{ proxy_host }}:{{ proxy_port }}'
+    proxy_ignore_mask   : '{{ network_ipv4_loopback_address }}{% for entry in ansible_all_ipv4_addresses %},{{ entry }}{% endfor %},{{ network_ipv4_loopback_name }},{{ ansible_hostname }},{{ ansible_fqdn }},.{{ ansible_domain }}{% if proxy_ignore_masks is defined and proxy_ignore_masks is not none and proxy_ignore_masks | length > 0 %}{% for entry in proxy_ignore_masks %},{{ entry }}{% endfor %}{% endif %}'
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################
+
+- name: environment | configure
+
+  when: proxy_enabled
+
+  become: true
+
+  with_items: proxy_env_lines
+
+  lineinfile: dest='{{ proxy_env_file   }}'
+            regexp='{{ proxy_env_prefix }}{{ item.name }}='
+              line='{{ proxy_env_prefix }}{{ item.name }}={{ item.value }}'
+            create=yes
+
+  register: configure
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################
+
+- name: environment | unconfigure
+
+  when: not proxy_enabled
+
+  become: true
+
+  with_items: proxy_env_lines
+
+  lineinfile: dest='{{ proxy_env_file   }}'
+            regexp='{{ proxy_env_prefix }}{{ item.name }}='
+             state=absent
+
+  register: unconfigure
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################
+
+- name: sudoers | configure
+
+  when: proxy_enabled
+
+  become: true
+
+  with_items: proxy_sudoers_lines
+
+  lineinfile: dest='{{ proxy_sudoers_file     }}'
+              line='{{ proxy_sudoers_prefix   }}{{ item }}'
+          validate='{{ proxy_sudoers_validate }}'
+            create=yes
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################
+
+- name: sudoers | unconfigure
+
+  when: not proxy_enabled
+
+  become: true
+
+  with_items: proxy_sudoers_lines
+
+  lineinfile: dest='{{ proxy_sudoers_file     }}'
+              line='{{ proxy_sudoers_prefix   }}{{ item }}'
+          validate='{{ proxy_sudoers_validate }}'
+             state=absent
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################
+
+- when: package_manager_is_apt
+
+  include: apt.yml
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - apt
+
+###################################################################################################
+
+- when: package_manager_is_yum
+
+  include: yum.yml
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - yum
+
+###################################################################################################
+
+- include: pac.yml
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - pac
+
+###################################################################################################
+
+- name: bounce
+
+  when: configure.changed
+     or unconfigure.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+
+###################################################################################################

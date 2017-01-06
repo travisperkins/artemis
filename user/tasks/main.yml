@@ -1,0 +1,189 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - user_name is defined
+      - user_name is not none
+      - user_name | length > 0
+
+      - user_base is defined
+      - user_base is not none
+      - user_base | length > 0
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: managed | check
+
+  become: true
+
+  stat: path={{ managed_dest }} follow=true get_checksum=false get_md5=false
+
+  register: managed
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: base | discover
+
+  become: true
+
+  shell: dirname {{ user_home }}
+
+  changed_when: false
+
+  register: base
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: base | touch
+
+  become: true
+
+  file: dest={{ base.stdout }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: base | access
+
+  when: user_base_access
+
+  become: true
+
+  file: dest={{ base.stdout     }}
+       owner={{ user_base_user  }}
+       group={{ user_base_group }}
+        mode={{ user_base_mode  }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: group
+
+  become: true
+
+  group: name={{ user_group | default(user_name) }}
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: user
+
+  become: true
+
+  user: name={{ user_name                       }}
+       group={{ user_group | default(user_name) }}
+       shell={{ user_shell                      }}
+        home={{ user_home                       }}
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: ownership | execute
+
+  when: user_cron | bool
+    and user_ownership_cron | bool
+    and not managed.stat.exists
+
+  become: true
+
+  shell: '{{ user_ownership_command }}'
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: ownership | job
+
+  when: user_cron | bool
+    and user_ownership_cron | bool
+
+  become: true
+
+  cron: name={{  user_ownership_name    }}
+        user={{  user_ownership_user    }}
+         job='{{ user_ownership_command }}'
+      minute={{  user_ownership_min     }}
+        hour={{  user_ownership_hour    }}
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: permissions | execute
+
+  when: user_cron | bool
+    and user_permissions_cron | bool
+    and not managed.stat.exists
+
+  become: true
+
+  shell: '{{ user_permissions_command }}'
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################
+
+- name: permissions | job
+
+  when: user_cron | bool
+    and user_permissions_cron | bool
+
+  become: true
+
+  cron: name={{  user_permissions_name    }}
+        user={{  user_permissions_user    }}
+         job='{{ user_permissions_command }}'
+      minute={{  user_permissions_min     }}
+        hour={{  user_permissions_hour    }}
+
+  tags:
+    - artemis
+    - platform
+    - user
+
+###################################################################################################

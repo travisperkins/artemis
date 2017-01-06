@@ -1,0 +1,79 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ os_family_lower }}'
+    - '{{ dev_null        }}'
+
+  tags:
+    - artemis
+    - boot
+    - initramfs
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - boot
+    - initramfs
+
+###################################################################################################
+
+- name: redhat | dependencies
+
+  when: os_family_is_redhat
+
+  become: true
+
+  with_items: initramfs_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - boot
+    - initramfs
+    - redhat
+
+###################################################################################################
+
+- name: update
+
+  when: initramfs_update
+
+  become: true
+
+  command: '{{ initramfs_update_cmd }}'
+
+  register: update
+
+  tags:
+    - artemis
+    - boot
+    - initramfs
+
+###################################################################################################
+
+- name: signals
+
+  when: update.changed
+
+  set_fact:
+    initramfs_update: false
+    bounce          : true
+
+  tags:
+    - artemis
+    - boot
+    - initramfs
+
+###################################################################################################

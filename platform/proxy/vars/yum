@@ -1,0 +1,19 @@
+###################################################################################################
+
+proxy_yum_file : '{{ proxy_base  }}/yum.conf'
+proxy_yum_mode : '{{ proxy_mode  }}'
+proxy_yum_lines:
+
+  - name : enableProxy
+    value: '{% if proxy_enabled %}1{% else %}0{% endif %}'
+    after: ^\[main\]$
+
+  - name : proxy
+    value: '{{ proxy_http_endpoint | default() }}'
+    after: ^enableProxy=*
+
+  - name : httpProxy
+    value: '{{ proxy_http_endpoint | default() }}'
+    after: ^proxy=*
+
+###################################################################################################

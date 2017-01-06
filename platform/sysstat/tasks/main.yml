@@ -1,0 +1,57 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ os_family_lower }}'
+    - '{{ dev_null        }}'
+
+  tags:
+    - artemis
+    - platform
+    - sysstat
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - sysstat
+
+###################################################################################################
+
+- name: debian
+
+  when: os_family_is_debian
+
+  include: debian.yml
+
+  tags:
+    - artemis
+    - platform
+    - sysstat
+    - debian
+
+###################################################################################################
+
+- name: redhat
+
+  when: os_family_is_redhat
+
+  include: redhat.yml
+
+  tags:
+    - artemis
+    - platform
+    - sysstat
+    - redhat
+
+###################################################################################################

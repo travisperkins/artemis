@@ -1,0 +1,35 @@
+###################################################################################################
+
+logrotate_word: logrotate
+
+###################################################################################################
+
+logrotate_dependencies:
+
+  - '{{ logrotate_word }}'
+
+###################################################################################################
+
+logrotate_retain   : 50
+logrotate_as_user  : '{{ root_user }}'
+logrotate_frequency: daily
+
+###################################################################################################
+
+logrotate_src    : '{{ logrotate_word }}.j2'
+logrotate_base   : '{{ etc_base       }}/{{ logrotate_word }}.d'
+logrotate_dest   : '{{ logrotate_base }}/{{ logrotate_name }}'
+logrotate_mode   : '0644'
+logrotate_entries:
+
+  - shred
+  - compress
+  - missingok
+  - notifempty
+  - copytruncate
+  - delaycompress
+  - rotate {{ logrotate_retain    }}
+  - su {{     logrotate_as_user   }}
+  - '{{       logrotate_frequency }}'
+
+###################################################################################################

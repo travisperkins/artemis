@@ -1,0 +1,37 @@
+###################################################################################################
+
+- name: redhat | upgrade
+
+  when: patch_upgrade
+
+  become: true
+
+  yum : name=* state=latest
+
+  register: upgrade
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - patch
+    - redhat
+
+###################################################################################################
+
+- name: redhat | signals
+
+  when: upgrade.changed
+
+  set_fact:
+    bounce : true
+    patched: true
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - patch
+    - redhat
+
+###################################################################################################

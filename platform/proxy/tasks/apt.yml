@@ -1,0 +1,39 @@
+###################################################################################################
+
+- name: apt | configure
+
+  when: proxy_enabled
+
+  become: true
+
+  with_items: proxy_apt_lines
+
+  lineinfile: dest='{{ proxy_apt_file }}'
+              mode='{{ proxy_apt_mode }}'
+            regexp='{{ item.name      }}'
+              line='{{ item.name      }} "{{ item.value }}";'
+            create=yes
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - apt
+
+###################################################################################################
+
+- name: apt | unconfigure
+
+  when: not proxy_enabled
+
+  become: true
+
+  file: dest={{ proxy_apt_file }} state=absent
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - apt
+
+###################################################################################################

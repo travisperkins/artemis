@@ -1,0 +1,181 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - os_family_is_debian
+
+      - init_sysv_name is defined
+      - init_sysv_name is not none
+      - init_sysv_name | length > 0
+
+      - init_sysv_command is defined
+      - init_sysv_command is not none
+      - init_sysv_command | length > 0
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: pid | touch
+
+  become: true
+
+  file: dest={{ init_sysv_pid_file }}
+        mode={{ init_sysv_pid_mode }}
+       owner={{ init_sysv_run_as   }}
+       state=touch
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: pid | check
+
+  become     : true
+  become_user: '{{ init_sysv_run_as }}'
+
+  file: dest={{ init_sysv_pid_file }} state=touch
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: log | touch
+
+  become: true
+
+  file: dest={{ init_sysv_log_file }}
+        mode={{ init_sysv_log_mode }}
+       owner={{ init_sysv_run_as   }}
+       state=touch
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: log | check
+
+  become     : true
+  become_user: '{{ init_sysv_run_as }}'
+
+  file: dest={{ init_sysv_log_file }} state=touch
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: script | configure
+
+  become: true
+
+  template: src={{ init_sysv_src    }}
+           dest={{ init_sysv_dest   }}
+           mode={{ init_sysv_mode   }}
+          owner={{ init_sysv_run_as }}
+
+  register: configure
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: script | check
+
+  become     : true
+  become_user: '{{ init_sysv_run_as }}'
+
+  file: dest={{ init_sysv_dest }} state=touch
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: restart
+
+  when: configure.changed
+    and init_sysv_state == 'started'
+     or init_sysv_state == 'restarted'
+
+  become: true
+
+  service: name={{ init_sysv_name }} state=restarted
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: toggle
+
+  when: init_sysv_state == 'restarted'
+
+  set_fact:
+    init_sysv_state: started
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################
+
+- name: service
+
+  become: true
+
+  service: name={{ init_sysv_name    }}
+          state={{ init_sysv_state   }}
+        enabled={{ init_sysv_enabled }}
+
+  tags:
+    - artemis
+    - process-control
+    - init-sysv
+    - debian
+
+###################################################################################################

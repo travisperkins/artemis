@@ -1,0 +1,151 @@
+###################################################################################################
+
+version: v1.5.0
+
+###################################################################################################
+
+bounce : false
+patched: false
+
+###################################################################################################
+
+root_user: root
+
+###################################################################################################
+
+etc_base    : /etc
+boot_base   : /boot
+var_lib_base: /var/lib
+
+###################################################################################################
+
+managed_file: managed
+managed_dest: /{{ managed_file }}
+
+###################################################################################################
+
+dev_null     : /dev/null
+null_redirect: '> {{ dev_null }} 2>&1'
+
+###################################################################################################
+
+ssh_host     : '{{ ansible_ssh_host | default(inventory_hostname) }}'
+ssh_port     : '{{ ansible_ssh_port | default(22, true)           }}'
+ssh_proto    : tcp
+ssh_wait_up  : 300
+ssh_wait_down: 300
+
+###################################################################################################
+
+automatic_setup: true
+
+###################################################################################################
+
+connection_pause: 0
+
+###################################################################################################
+
+uri_scheme_http : http://
+uri_scheme_https: https://
+
+###################################################################################################
+
+dynamic_identity: false
+dynamic_hardware: false
+
+###################################################################################################
+
+overrides         : true
+
+overrides_word    : overrides
+
+overrides_none    : '{{ dev_null       }}'
+overrides_base    : '{{ overrides_none }}'
+overrides_file    : '{{ overrides_word }}'
+overrides_path    : '{% if overrides_base is none or overrides_base | trim | length == 0 or overrides_base == overrides_none %}{{ overrides_none }}{% else %}{{ overrides_base }}/{{ overrides_file }}{% endif %}'
+
+overrides_verify  : ({{ overrides }} and ('{{ overrides_path }}' != '{{ overrides_none }}'))
+overrides_verified: false
+
+###################################################################################################
+
+pam_d_base        : '{{ etc_base }}/pam.d'
+
+pam_d_file_sshd   : '{{ pam_d_base }}/sshd'
+pam_d_file_login  : '{{ pam_d_base }}/login'
+
+pam_module_motd   : pam_motd.so
+pam_module_mail   : pam_mail.so
+pam_module_lastlog: pam_lastlog.so
+
+###################################################################################################
+
+deployment_mode         : '{{ deployment_mode_live }}'
+
+deployment_mode_live    : live
+deployment_mode_is_live : ('{{ deployment_mode }}' == '{{ deployment_mode_live }}')
+
+deployment_mode_image   : image
+deployment_mode_is_image: ('{{ deployment_mode }}' == '{{ deployment_mode_image }}')
+
+###################################################################################################
+
+security_word                 : security
+
+security_mode                 : '{{ security_mode_balanced }}'
+
+security_mode_standard        : standard
+security_mode_is_standard     : ('{{   security_mode              }}' == '{{ security_mode_standard    }}')
+security_mode_inc_standard    : ( {{   security_mode_is_standard  }}  or  {{ security_mode_is_balanced }} or {{ security_mode_is_enhanced }})
+security_mode_not_inc_standard: not {{ security_mode_inc_standard }}
+
+security_mode_balanced        : balanced
+security_mode_is_balanced     : ('{{   security_mode              }}' == '{{ security_mode_balanced    }}')
+security_mode_inc_balanced    : ( {{   security_mode_is_balanced  }}  or  {{ security_mode_is_enhanced }} )
+security_mode_not_inc_balanced: not {{ security_mode_inc_balanced }}
+
+security_mode_enhanced        : enhanced
+security_mode_is_enhanced     : ('{{   security_mode              }}' == '{{ security_mode_enhanced }}')
+security_mode_inc_enhanced    : ( {{   security_mode_is_enhanced  }})
+security_mode_not_inc_enhanced: not {{ security_mode_inc_enhanced }}
+
+security_mode_custom          : custom
+security_mode_is_custom       : ('{{ security_mode }}' == '{{ security_mode_custom }}')
+
+###################################################################################################
+
+os_family_native   :  '{{ ansible_os_family        }}'
+os_family_lower    :  '{{ os_family_native | lower }}'
+os_family_is_debian: ('{{ os_family_lower          }}' == 'debian')
+os_family_is_redhat: ('{{ os_family_lower          }}' == 'redhat')
+
+###################################################################################################
+
+distribution_native   :  '{{ ansible_distribution        }}'
+distribution_lower    :  '{{ distribution_native | lower }}'
+distribution_is_debian: ('{{ distribution_lower          }}' == 'debian')
+distribution_is_ubuntu: ('{{ distribution_lower          }}' == 'ubuntu')
+distribution_is_centos: ('{{ distribution_lower          }}' == 'centos')
+distribution_is_rhel  : ('{{ distribution_lower          }}' == 'rhel')
+
+###################################################################################################
+
+package_manager_native:  '{{ ansible_pkg_mgr                }}'
+package_manager_lower :  '{{ package_manager_native | lower }}'
+package_manager_upper :  '{{ package_manager_native | upper }}'
+package_manager_is_apt: ('{{ package_manager_lower          }}' == 'apt')
+package_manager_is_yum: ('{{ package_manager_lower          }}' == 'yum')
+
+###################################################################################################
+
+distribution_release_native    :  '{{ ansible_distribution_release        }}'
+distribution_release_lower     :  '{{ distribution_release_native | lower }}'
+distribution_release_is_jessie : ('{{ distribution_release_lower          }}' == 'jessie' )
+distribution_release_is_trusty : ('{{ distribution_release_lower          }}' == 'trusty' )
+distribution_release_is_utopic : ('{{ distribution_release_lower          }}' == 'utopic' )
+distribution_release_is_vivid  : ('{{ distribution_release_lower          }}' == 'vivid'  )
+distribution_release_is_wily   : ('{{ distribution_release_lower          }}' == 'wily'   )
+distribution_release_is_xenial : ('{{ distribution_release_lower          }}' == 'xenial' )
+distribution_release_is_yakkety: ('{{ distribution_release_lower          }}' == 'yakkety')
+
+###################################################################################################

@@ -1,0 +1,34 @@
+###################################################################################################
+
+grub_update: false
+
+###################################################################################################
+
+grub_regex_prefix: ^
+grub_regex_suffix: .*$
+
+###################################################################################################
+
+grub_timeout        : 0
+grub_timeout_key    : GRUB_TIMEOUT
+grub_timeout_search : '{{ grub_regex_prefix }}{{  grub_timeout_key }}={{ grub_regex_suffix }}'
+grub_timeout_replace: '{{ grub_timeout_key  }}={{ grub_timeout     }}'
+
+###################################################################################################
+
+grub_hidden_timeout_key  : GRUB_HIDDEN_TIMEOUT
+grub_hidden_timeout_regex: '{{ grub_regex_prefix }}{{ grub_hidden_timeout_key }}{{ grub_regex_suffix }}'
+
+###################################################################################################
+
+grub_mkcfg_base: '{{ grub_word          }}-mkconfig'
+grub_mkcfg_cmd : '{{ grub_mkcfg_base }} --output={{ grub_cfg_dest }}'
+
+###################################################################################################
+
+grub_cfg_dest : '{{ boot_base  }}/{{ grub_word }}/{{ grub_word }}.cfg'
+grub_cfg_owner: '{{ root_user  }}'
+grub_cfg_group: '{{ grub_owner }}'
+grub_cfg_mode : '0400'
+
+###################################################################################################

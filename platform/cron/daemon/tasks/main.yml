@@ -1,0 +1,241 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ item }}'
+
+  with_first_found:
+    - '{{ os_family_lower }}'
+    - '{{ dev_null        }}'
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: debian | install
+
+  when: os_family_is_debian
+
+  become: true
+
+  with_items: '{{ cron_dependencies }}'
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+    - debian
+
+###################################################################################################
+
+- name: redhat | install
+
+  when: os_family_is_redhat
+
+  become: true
+
+  with_items: '{{ cron_dependencies }}'
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+    - redhat
+
+###################################################################################################
+
+- name: tab | stat
+
+  become: true
+
+  stat: path={{ cron_tab_file }} follow=true get_checksum=false get_md5=false
+
+  register: tab
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: tab | state
+
+  when: not tab.stat.exists
+
+  set_fact:
+    cron_tab_state: touch
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: tab | control
+
+  become: true
+
+  file: dest={{  cron_tab_file  }}
+        mode='{{ cron_tab_mode  }}'
+       owner={{  cron_tab_owner }}
+       group={{  cron_tab_group }}
+       state={{  cron_tab_state }}
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: d
+
+  become: true
+
+  file: path='{{ cron_d_dir     }}'
+        mode='{{ cron_d_mode    }}'
+       owner={{  cron_d_owner   }}
+       group={{  cron_d_group   }}
+     recurse={{  cron_d_recurse }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: hourly
+
+  become: true
+
+  file: path='{{ cron_hourly_dir     }}'
+        mode='{{ cron_hourly_mode    }}'
+       owner={{  cron_hourly_owner   }}
+       group={{  cron_hourly_group   }}
+     recurse={{  cron_hourly_recurse }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: daily
+
+  become: true
+
+  file: path='{{ cron_daily_dir     }}'
+        mode='{{ cron_daily_mode    }}'
+       owner={{  cron_daily_owner   }}
+       group={{  cron_daily_group   }}
+     recurse={{  cron_daily_recurse }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: weekly
+
+  become: true
+
+  file: path='{{ cron_weekly_dir     }}'
+        mode='{{ cron_weekly_mode    }}'
+       owner={{  cron_weekly_owner   }}
+       group={{  cron_weekly_group   }}
+     recurse={{  cron_weekly_recurse }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: monthly
+
+  become: true
+
+  file: path='{{ cron_monthly_dir     }}'
+        mode='{{ cron_monthly_mode    }}'
+       owner={{  cron_monthly_owner   }}
+       group={{  cron_monthly_group   }}
+     recurse={{  cron_monthly_recurse }}
+       state=directory
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: enable
+
+  become: true
+
+  service: name={{ cron_service }} enabled=true
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################
+
+- name: start
+
+  become: true
+
+  service: name={{ cron_service }} state=started
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - daemon
+
+###################################################################################################

@@ -1,0 +1,119 @@
+###################################################################################################
+
+- name: pac | set | facts
+
+  when: proxy_pac_url is defined
+    and proxy_pac_url is not none
+    and proxy_pac_url | length > 0
+
+  set_fact:
+    proxy_pac_enabled : true
+    proxy_pac_local   : '{% if proxy_pac_edits is defined and proxy_pac_edits is not none and proxy_pac_edits | length > 0 %}true{% endif %}'
+    proxy_pac_endpoint: '{% if proxy_pac_edits is defined and proxy_pac_edits is not none and proxy_pac_edits | length > 0 %}{{ proxy_pac_local_url }}{% else %}{{ proxy_pac_url }}{% endif %}'
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - pac
+
+###################################################################################################
+
+- name: pac | download
+
+  when: proxy_pac_enabled
+    and proxy_pac_local
+
+  become: true
+
+  get_url: url={{ proxy_pac_url            }}
+          dest={{ proxy_pac_local_download }}
+         force=true
+     use_proxy=false
+
+  register: download
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - pac
+
+###################################################################################################
+
+- name: pac | copy
+
+  when: download.changed
+
+  become: true
+
+  shell: cp {{ proxy_pac_local_download }} {{ proxy_pac_local_file }}
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - pac
+
+###################################################################################################
+
+- name: pac | edit
+
+  when: download.changed
+
+  become: true
+
+  with_items: proxy_pac_edits
+
+  replace: regexp={{ item.search          }}
+          replace={{ item.replace         }}
+             dest={{ proxy_pac_local_file }}
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - pac
+
+###################################################################################################
+
+- name: pac | environment | configure
+
+  when: proxy_pac_enabled
+
+  become: true
+
+  with_items: proxy_pac_env_lines
+
+  lineinfile: dest='{{ proxy_env_file   }}'
+            regexp='{{ proxy_env_prefix }}{{ item.name }}='
+              line='{{ proxy_env_prefix }}{{ item.name }}={{ item.value }}'
+            create=yes
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - pac
+
+###################################################################################################
+
+- name: pac | environment | unconfigure
+
+  when: not proxy_pac_enabled
+
+  become: true
+
+  with_items: proxy_pac_env_lines
+
+  lineinfile: dest='{{ proxy_env_file   }}'
+            regexp='{{ proxy_env_prefix }}{{ item.name }}='
+             state=absent
+
+  tags:
+    - artemis
+    - platform
+    - proxy
+    - pac
+
+###################################################################################################

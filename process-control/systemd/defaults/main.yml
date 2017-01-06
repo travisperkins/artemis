@@ -1,0 +1,19 @@
+###################################################################################################
+
+systemd_enabled: true
+systemd_run_as : '{{ root_user }}'
+systemd_state  : started
+
+###################################################################################################
+
+systemd_config_name: service
+systemd_config_src : '{{ systemd_config_name }}.j2'
+systemd_config_base: '{{ etc_base }}/systemd/system'
+systemd_config_dest: '{{ systemd_config_base }}/{{ systemd_name }}.{{ systemd_config_name }}'
+systemd_config_mode: '0644'
+
+###################################################################################################
+
+systemd_reload_command: 'systemctl daemon-reload'
+
+###################################################################################################

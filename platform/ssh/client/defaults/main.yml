@@ -1,0 +1,20 @@
+###################################################################################################
+
+ssh_config_file: config
+ssh_config_src : '{{ ssh_config_file }}.j2'
+ssh_config_dest: '{{ ssh_base        }}/{{ ssh_config_file }}'
+ssh_config_mode: '0600'
+
+###################################################################################################
+
+ssh_batch_mode              : 'yes'
+ssh_compression             : 'yes'
+ssh_check_host_ip           : 'no'
+ssh_tcp_keep_alive          : 'yes'
+ssh_control_master          : 'auto'
+ssh_control_persist         : 'yes'
+ssh_server_alive_interval   : '5'
+ssh_server_alive_count_max  : '3'
+ssh_strict_host_key_checking: 'no'
+
+###################################################################################################

@@ -1,0 +1,93 @@
+###################################################################################################
+
+- name: debian | dependencies
+
+  become: true
+
+  with_items: firewall_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - platform
+    - firewall
+    - debian
+
+###################################################################################################
+
+- name: start
+
+  become: true
+
+  service: name={{ firewall_service }} state=started
+
+  tags:
+    - artemis
+    - platform
+    - firewall
+    - debian
+
+###################################################################################################
+
+- name: debian | ssh
+
+  become: true
+
+  ufw : port={{ firewall_ssh_port  }}
+       proto={{ firewall_ssh_proto }}
+        rule={{ firewall_ssh_rule  }}
+
+  tags:
+    - artemis
+    - platform
+    - firewall
+    - debian
+
+###################################################################################################
+
+- name: debian | logging
+
+  become: true
+
+  ufw : logging={{ firewall_logging }}
+
+  tags:
+    - artemis
+    - platform
+    - firewall
+    - debian
+
+###################################################################################################
+
+- name: debian | enable
+
+  when: firewall_enabled
+
+  become: true
+
+  ufw : state=enabled
+
+  tags:
+    - artemis
+    - platform
+    - firewall
+    - debian
+
+###################################################################################################
+
+- name: debian | disable
+
+  when: not firewall_enabled
+
+  become: true
+
+  ufw : state=disabled
+
+  tags:
+    - artemis
+    - platform
+    - firewall
+    - debian
+
+###################################################################################################

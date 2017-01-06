@@ -1,0 +1,49 @@
+###################################################################################################
+
+- name: verify
+
+  when: hostname
+
+  assert:
+    that:
+
+      - host_name is defined
+      - host_name is not none
+      - host_name | length > 0
+
+  tags:
+    - artemis
+    - platform
+    - hostname
+
+###################################################################################################
+
+- name: configure
+
+  when: hostname
+
+  become: true
+
+  hostname: name={{ host_name }}
+
+  register: configure
+
+  tags:
+    - artemis
+    - platform
+    - hostname
+
+###################################################################################################
+
+- name: setup
+
+  when: configure.changed
+
+  setup:
+
+  tags:
+    - artemis
+    - platform
+    - hostname
+
+###################################################################################################

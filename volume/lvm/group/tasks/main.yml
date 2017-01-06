@@ -1,0 +1,43 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - lvm_group_name is defined
+      - lvm_group_name is not none
+      - lvm_group_name | length > 0
+
+      - lvm_group_devices is defined
+      - lvm_group_devices is not none
+      - lvm_group_devices | length > 0
+
+      - lvm_group_devices_flat is not none
+      - lvm_group_devices_flat | length > 0
+
+  tags:
+    - artemis
+    - volume
+    - lvm
+    - group
+
+###################################################################################################
+
+- name: group
+
+  become: true
+
+  lvg: vg={{ lvm_group_name         }}
+      pvs={{ lvm_group_devices_flat }}
+   pesize={{ lvm_group_pesize       }}
+    state={{ lvm_group_state        }}
+    force={{ lvm_group_force        }}
+
+  tags:
+    - artemis
+    - volume
+    - lvm
+    - group
+
+###################################################################################################

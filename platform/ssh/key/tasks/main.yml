@@ -1,0 +1,18 @@
+###################################################################################################
+
+- name: private
+
+  become     : true
+  become_user: '{{ ssh_user }}'
+
+  copy: src={{ ssh_key_src_path  }}
+       dest={{ ssh_key_dest_path }}
+       mode={{ ssh_key_dest_mode }}
+
+  tags:
+    - artemis
+    - platform
+    - ssh
+    - key
+
+###################################################################################################

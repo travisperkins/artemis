@@ -1,0 +1,22 @@
+###################################################################################################
+
+- name : server
+
+  hosts: all
+
+  gather_facts: false
+
+  roles:
+
+    - role: bootstrap
+
+    - role: platform/server
+
+    - role: platform/terminus
+
+  tags:
+    - artemis
+    - platform
+    - server
+
+###################################################################################################

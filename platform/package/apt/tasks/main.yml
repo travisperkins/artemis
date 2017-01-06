@@ -1,0 +1,113 @@
+###################################################################################################
+
+- name: import | distribution
+
+  include_vars: '{{ package_apt_distro }}'
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - apt
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - apt
+
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - package_apt_sources is defined
+      - package_apt_sources is not none
+      - package_apt_sources | length > 0
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - apt
+
+###################################################################################################
+
+- name: keys
+
+  when: package_apt_keys is defined
+    and package_apt_keys is not none
+    and package_apt_keys | length > 0
+
+  become: true
+
+  with_items: package_apt_keys
+
+  apt_key: data='{{ item }}'
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - apt
+
+###################################################################################################
+
+- name: configure
+
+  become: true
+
+  template: src={{ package_apt_src  }}
+           dest={{ package_apt_dest }}
+           mode={{ package_apt_mode }}
+
+  register: configure
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - apt
+
+###################################################################################################
+
+- name: update
+
+  when: configure.changed
+
+  become: true
+
+  apt : update_cache=yes
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - apt
+
+###################################################################################################
+
+- name: patch
+
+  when: configure.changed
+
+  set_fact:
+    patch_update: false
+
+  tags:
+    - artemis
+    - platform
+    - package
+    - apt
+
+###################################################################################################

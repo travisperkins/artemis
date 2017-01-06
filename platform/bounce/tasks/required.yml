@@ -1,0 +1,30 @@
+###################################################################################################
+
+- name: required | check
+
+  become: true
+
+  stat: path={{ bounce_required_file }} follow=true get_checksum=false get_md5=false
+
+  register: check
+
+  tags:
+    - artemis
+    - platform
+    - bounce
+
+###################################################################################################
+
+- name: required | flag
+
+  when: check.stat.exists
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - bounce
+
+###################################################################################################

@@ -1,0 +1,19 @@
+###################################################################################################
+
+dependencies:
+
+  -   role: shared
+
+  - { when: user_ownership_cron
+         or user_permissions_cron,
+      role: platform/cron/daemon }
+
+  - { when: user_ownership_cron,
+      role: platform/cron/allow,
+      cron_allow_user: '{{ user_ownership_user }}' }
+
+  - { when: user_permissions_cron,
+      role: platform/cron/allow  ,
+      cron_allow_user: '{{ user_permissions_user }}' }
+
+###################################################################################################

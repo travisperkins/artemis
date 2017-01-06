@@ -1,0 +1,54 @@
+###################################################################################################
+
+- name: wait
+
+  when: ping
+
+  become: false
+
+  local_action: wait_for host={{ ping_host }}
+                         port={{ ping_port }}
+                      timeout={{ ping_wait }}
+                        state=started
+
+  tags:
+    - artemis
+    - platform
+    - ping
+
+###################################################################################################
+
+- name: pause
+
+  when: ping
+    and connection_pause is not none
+    and connection_pause is number
+    and connection_pause | int > 0
+
+  become: false
+
+  local_action: command sleep {{ connection_pause | int }}
+
+  changed_when: false
+
+  tags:
+    - artemis
+    - platform
+    - ping
+
+###################################################################################################
+
+- name: execute
+
+  when: ping
+
+  become: true
+
+  raw: '{{ ping_command }}'
+
+  tags:
+    - artemis
+    - platform
+    - ping
+
+###################################################################################################

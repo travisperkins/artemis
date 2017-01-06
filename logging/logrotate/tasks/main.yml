@@ -1,0 +1,76 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - logrotate_name is defined
+      - logrotate_name is not none
+      - logrotate_name | length > 0
+
+      - logrotate_file is defined
+      - logrotate_file is not none
+      - logrotate_file | length > 0
+
+      - logrotate_frequency is not none
+      - logrotate_frequency in ['daily', 'weekly', 'monthly', 'yearly']
+
+  tags:
+    - artemis
+    - logging
+    - logrotate
+
+###################################################################################################
+
+- name: debian | dependencies
+
+  when: os_family_is_debian
+
+  become: true
+
+  with_items: logrotate_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - logging
+    - logrotate
+    - debian
+
+###################################################################################################
+
+- name: redhat | dependencies
+
+  when: os_family_is_redhat
+
+  become: true
+
+  with_items: logrotate_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - logging
+    - logrotate
+    - redhat
+
+###################################################################################################
+
+- name: configure
+
+  become: true
+
+  template: src={{ logrotate_src     }}
+           dest={{ logrotate_dest    }}
+           mode={{ logrotate_mode    }}
+          owner={{ logrotate_as_user }}
+
+  tags:
+    - artemis
+    - logging
+    - logrotate
+
+###################################################################################################

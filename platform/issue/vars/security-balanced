@@ -1,0 +1,9 @@
+###################################################################################################
+
+issue_message: '{{ issue_standard_message }} {{ issue_balanced_message }}'
+
+###################################################################################################
+
+issue_balanced_message: There is no right of privacy in this system. Use of this system constitutes consent to monitoring, interception, recording, reading, copying and disclosure.
+
+###################################################################################################

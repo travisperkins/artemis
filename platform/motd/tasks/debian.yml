@@ -1,0 +1,63 @@
+###################################################################################################
+
+- name: debian | import
+
+  include_vars: debian
+
+  tags:
+    - artemis
+    - platform
+    - motd
+    - debian
+
+###################################################################################################
+
+- name: debian | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - motd
+    - debian
+
+###################################################################################################
+
+- name: debian | pam | sshd
+
+  become: true
+
+  with_items: motd_pam_sshd_remove
+
+  lineinfile: dest={{ motd_pam_sshd_path }}
+            regexp={{ item               }}
+             state=absent
+
+  tags:
+    - artemis
+    - platform
+    - motd
+    - debian
+
+###################################################################################################
+
+- name: debian | pam | login
+
+  become: true
+
+  with_items: motd_pam_login_remove
+
+  lineinfile: dest={{ motd_pam_login_path }}
+            regexp={{ item                }}
+             state=absent
+
+  tags:
+    - artemis
+    - platform
+    - motd
+    - debian
+
+###################################################################################################

@@ -1,0 +1,53 @@
+###################################################################################################
+
+- name: ubuntu | 14 | locale
+
+  become: true
+
+  lineinfile: dest={{ locale_locale_dest    }}
+            regexp={{ locale_locale_search  }}
+              line={{ locale_locale_replace }}
+
+  register: locale
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - ubuntu-14
+
+###################################################################################################
+
+- name: ubuntu | 14 | layout
+
+  become: true
+
+  lineinfile: dest={{ locale_layout_dest    }}
+            regexp={{ locale_layout_search  }}
+              line={{ locale_layout_replace }}
+
+  register: layout
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - ubuntu-14
+
+###################################################################################################
+
+- name: ubuntu | 14 | signal
+
+  when: locale.changed
+     or layout.changed
+
+  set_fact:
+    bounce: true
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - ubuntu-14
+
+###################################################################################################

@@ -1,0 +1,12 @@
+###################################################################################################
+
+dependencies:
+
+  -   role: network/shared
+
+  - { role: boot/grub/cmdline,
+      grub_cmdline_arg_name : '{{ network_ipv6_kernel_arg_name  }}' ,
+      grub_cmdline_arg_regex: '{{ network_ipv6_kernel_arg_regex }}' ,
+      grub_cmdline_arg_value: '{{ network_ipv6_kernel_arg_value }}' }
+
+###################################################################################################

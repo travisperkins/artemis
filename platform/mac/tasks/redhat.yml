@@ -1,0 +1,50 @@
+###################################################################################################
+
+- name: redhat | dependencies
+
+  become: true
+
+  with_items: mac_dependencies
+
+  yum : name={{ item }} state=present
+
+  tags:
+    - artemis
+    - platform
+    - mac
+    - redhat
+
+###################################################################################################
+
+- name: redhat | configure
+
+  become: true
+
+  selinux: policy={{ mac_policy }}
+            state={% if mac_enabled %}{{ mac_state }}{% else %}disabled{% endif %}
+
+  register: configure
+
+  tags:
+    - artemis
+    - platform
+    - mac
+    - redhat
+
+###################################################################################################
+
+- name: redhat | relabel
+
+  when: configure.changed
+
+  become: true
+
+  file: dest={{ mac_relabel_flag }} state=touch
+
+  tags:
+    - artemis
+    - platform
+    - mac
+    - redhat
+
+###################################################################################################

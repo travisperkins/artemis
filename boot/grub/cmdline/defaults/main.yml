@@ -1,0 +1,33 @@
+###################################################################################################
+
+grub_cmdline_key: GRUB_CMDLINE_LINUX
+
+###################################################################################################
+
+grub_cmdline_arg_regex: '{{ grub_cmdline_arg_name }}'
+
+###################################################################################################
+
+grub_cmdline_grub_regex_prefix: '^{{ grub_cmdline_key }}=(\".*\s*)'
+grub_cmdline_grub_regex_suffix: '(\s*.*\")$'
+
+###################################################################################################
+
+grub_cmdline_grub_check_search  : '{{ grub_cmdline_grub_regex_prefix }}({{ grub_cmdline_arg_regex }}=\S*){{ grub_cmdline_grub_regex_suffix }}'
+grub_cmdline_grub_check_command : grep -E '{{ grub_cmdline_grub_check_search }}' {{ grub_dest }}
+grub_cmdline_grub_check_match   : 0
+grub_cmdline_grub_check_no_match: 1
+
+###################################################################################################
+
+grub_cmdline_grub_insert_search  : '{{ grub_cmdline_grub_regex_prefix }}{{ grub_cmdline_grub_regex_suffix }}'
+grub_cmdline_grub_insert_replace : '{{ grub_cmdline_key }}=\1 {{ grub_cmdline_arg_name }}={{ grub_cmdline_arg_value }}\2'
+grub_cmdline_grub_insert_backrefs: true
+
+###################################################################################################
+
+grub_cmdline_grub_update_search  : '{{ grub_cmdline_grub_check_search }}'
+grub_cmdline_grub_update_replace : '{{ grub_cmdline_key }}=\1{{ grub_cmdline_arg_name }}={{ grub_cmdline_arg_value }}\3'
+grub_cmdline_grub_update_backrefs: true
+
+###################################################################################################

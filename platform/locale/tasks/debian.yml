@@ -1,0 +1,31 @@
+###################################################################################################
+
+- name: debian | dependencies
+
+  become: true
+
+  with_items: locale_dependencies
+
+  apt : name={{ item }} state=present install_recommends=false
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - debian
+
+###################################################################################################
+
+- name: debian | generate
+
+  become: true
+
+  locale_gen: name={{ locale_locale }} state=present
+
+  tags:
+    - artemis
+    - platform
+    - locale
+    - debian
+
+###################################################################################################

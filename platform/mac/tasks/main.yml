@@ -1,0 +1,68 @@
+###################################################################################################
+
+- name: import | family
+
+  include_vars: '{{ os_family_lower }}'
+
+  tags:
+    - artemis
+    - platform
+    - mac
+
+###################################################################################################
+
+- name: import | overrides
+
+  when: overrides_verified
+
+  include_vars: '{{ overrides_path }}'
+
+  tags:
+    - artemis
+    - platform
+    - mac
+
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - mac_security is not none
+      - mac_security | length > 0
+
+  tags:
+    - artemis
+    - platform
+    - mac
+
+###################################################################################################
+
+- name: debian
+
+  when: os_family_is_debian
+
+  include: debian.yml
+
+  tags:
+    - artemis
+    - platform
+    - mac
+    - debian
+
+###################################################################################################
+
+- name: redhat
+
+  when: os_family_is_redhat
+
+  include: redhat.yml
+
+  tags:
+    - artemis
+    - platform
+    - mac
+    - redhat
+
+###################################################################################################

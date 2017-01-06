@@ -1,0 +1,13 @@
+###################################################################################################
+
+dependencies:
+
+  - { role: boot/grub/control, caller: '{{ terminus_bounce_caller }}' }
+  - { role: boot/initramfs,    caller: '{{ terminus_bounce_caller }}' }
+  - { role: platform/bounce,   caller: '{{ terminus_bounce_caller }}' }
+
+  -   role: platform/managed
+
+  -   role: platform/motd
+
+###################################################################################################

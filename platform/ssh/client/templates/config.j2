@@ -1,0 +1,17 @@
+###
+### {{ ansible_managed }}
+###
+
+###################################################################################################
+
+BatchMode             {{ ssh_batch_mode               }}
+Compression           {{ ssh_compression              }}
+CheckHostIP           {{ ssh_check_host_ip            }}
+TCPKeepAlive          {{ ssh_tcp_keep_alive           }}
+ControlMaster         {{ ssh_control_master           }}
+ControlPersist        {{ ssh_control_persist          }}
+ServerAliveInterval   {{ ssh_server_alive_interval    }}
+ServerAliveCountMax   {{ ssh_server_alive_count_max   }}
+StrictHostKeyChecking {{ ssh_strict_host_key_checking }}
+
+###################################################################################################

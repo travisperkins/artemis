@@ -1,0 +1,38 @@
+###################################################################################################
+
+- name: verify
+
+  assert:
+    that:
+
+      - cron_deny_user is not none
+      - cron_deny_user | length > 0
+
+      - cron_deny_user_state in ['present', 'absent']
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - deny
+
+###################################################################################################
+
+- name: deny
+
+  when: cron_deny
+    and cron_deny_user != root_user
+
+  become: true
+
+  lineinfile: dest={{ cron_deny_file       }}
+              line={{ cron_deny_user       }}
+             state={{ cron_deny_user_state }}
+
+  tags:
+    - artemis
+    - platform
+    - cron
+    - deny
+
+###################################################################################################

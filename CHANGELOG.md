@@ -18,6 +18,9 @@
 ### platform/halt
 - **Change:** Adoption of shared distribution abstractions - [Katherine Albany]
 
+### platform/locale
+- **Change:** Adoption of shared distribution abstractions - [Katherine Albany]
+
 ### shared
 - **New:** Distribution major version abstractions - [Katherine Albany]
 

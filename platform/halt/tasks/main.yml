@@ -5,7 +5,7 @@
   include_vars: '{{ item }}'
 
   with_first_found:
-    - '{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}'
+    - '{{ distribution_lower }}-{{ distribution_major_version_lower }}'
     - '{{ dev_null }}'
 
   tags:

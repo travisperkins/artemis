@@ -9,6 +9,9 @@
 ### boot/grub/control
 - **Bugfix:** Incomplete task tagging - [Katherine Albany]
 
+### kernel/sysctl
+- **Change:** Adoption of shared distribution abstractions - [Katherine Albany]
+
 ### shared
 - **New:** Distribution major version abstractions - [Katherine Albany]
 

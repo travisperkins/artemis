@@ -121,20 +121,20 @@ os_family_is_redhat: ('{{ os_family_lower          }}' == 'redhat')
 
 ###################################################################################################
 
+package_manager_native:  '{{ ansible_pkg_mgr                }}'
+package_manager_lower :  '{{ package_manager_native | lower }}'
+package_manager_upper :  '{{ package_manager_native | upper }}'
+package_manager_is_apt: ('{{ package_manager_lower          }}' == 'apt')
+package_manager_is_yum: ('{{ package_manager_lower          }}' == 'yum')
+
+###################################################################################################
+
 distribution_native   :  '{{ ansible_distribution        }}'
 distribution_lower    :  '{{ distribution_native | lower }}'
 distribution_is_debian: ('{{ distribution_lower          }}' == 'debian')
 distribution_is_ubuntu: ('{{ distribution_lower          }}' == 'ubuntu')
 distribution_is_centos: ('{{ distribution_lower          }}' == 'centos')
 distribution_is_rhel  : ('{{ distribution_lower          }}' == 'rhel')
-
-###################################################################################################
-
-package_manager_native:  '{{ ansible_pkg_mgr                }}'
-package_manager_lower :  '{{ package_manager_native | lower }}'
-package_manager_upper :  '{{ package_manager_native | upper }}'
-package_manager_is_apt: ('{{ package_manager_lower          }}' == 'apt')
-package_manager_is_yum: ('{{ package_manager_lower          }}' == 'yum')
 
 ###################################################################################################
 
@@ -147,5 +147,10 @@ distribution_release_is_vivid  : ('{{ distribution_release_lower          }}' ==
 distribution_release_is_wily   : ('{{ distribution_release_lower          }}' == 'wily'   )
 distribution_release_is_xenial : ('{{ distribution_release_lower          }}' == 'xenial' )
 distribution_release_is_yakkety: ('{{ distribution_release_lower          }}' == 'yakkety')
+
+###################################################################################################
+
+distribution_major_version_native: '{{ ansible_distribution_major_version        }}'
+distribution_major_version_lower : '{{ distribution_major_version_native | lower }}'
 
 ###################################################################################################

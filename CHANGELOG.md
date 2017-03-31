@@ -9,6 +9,9 @@
 ### boot/grub/control
 - **Bugfix:** Incomplete task tagging - [Katherine Albany]
 
+### shared
+- **New:** Distribution major version abstractions - [Katherine Albany]
+
 <!------------------------------------------------------------------------------------------------>
 
 # **[v1.5.0](https://github.com/travisperkins/artemis/releases/tag/v1.5.0) (January 4, 2017)**

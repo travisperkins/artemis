@@ -12,6 +12,9 @@
 ### kernel/sysctl
 - **Change:** Adoption of shared distribution abstractions - [Katherine Albany]
 
+### platform/bounce
+- **Change:** Adoption of shared distribution abstractions - [Katherine Albany]
+
 ### shared
 - **New:** Distribution major version abstractions - [Katherine Albany]
 

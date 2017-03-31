@@ -5,7 +5,7 @@
   include_vars: '{{ item }}'
 
   with_first_found:
-    - '{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}'
+    - '{{ distribution_lower }}-{{ distribution_major_version_lower }}'
     - '{{ dev_null }}'
 
   tags:
@@ -30,8 +30,8 @@
 
 - name: ubuntu | 14
 
-  when: ansible_distribution               | lower == 'ubuntu'
-    and ansible_distribution_major_version | lower == '14'
+  when: distribution_is_ubuntu
+    and distribution_major_version_lower == '14'
 
   include: ubuntu-14.yml
 
@@ -45,8 +45,8 @@
 
 - name: systemd
 
-  when: ansible_distribution               | lower != 'ubuntu'
-     or ansible_distribution_major_version | lower != '14'
+  when: not (distribution_is_ubuntu
+         and distribution_major_version_lower == '14')
 
   include: systemd.yml
 

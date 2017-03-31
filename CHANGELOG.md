@@ -21,6 +21,9 @@
 ### platform/locale
 - **Change:** Adoption of shared distribution abstractions - [Katherine Albany]
 
+### platform/timezone
+- **Change:** Adoption of shared distribution abstractions - [Katherine Albany]
+
 ### shared
 - **New:** Distribution major version abstractions - [Katherine Albany]
 

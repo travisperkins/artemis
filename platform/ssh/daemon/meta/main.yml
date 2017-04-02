@@ -3,6 +3,7 @@
 dependencies:
 
   -   role: shared
+
   -   role: network/shared
 
   -   role: platform/issue

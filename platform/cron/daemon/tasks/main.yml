@@ -36,7 +36,7 @@
 
   become: true
 
-  with_items: '{{ cron_dependencies }}'
+  with_items: cron_dependencies
 
   apt : name={{ item }} state=present install_recommends=false
 
@@ -55,7 +55,7 @@
 
   become: true
 
-  with_items: '{{ cron_dependencies }}'
+  with_items: cron_dependencies
 
   yum : name={{ item }} state=present
 

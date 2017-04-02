@@ -21,7 +21,7 @@ grub_hidden_timeout_regex: '{{ grub_regex_prefix }}{{ grub_hidden_timeout_key }}
 
 ###################################################################################################
 
-grub_mkcfg_base: '{{ grub_word          }}-mkconfig'
+grub_mkcfg_base: '{{ grub_word       }}-mkconfig'
 grub_mkcfg_cmd : '{{ grub_mkcfg_base }} --output={{ grub_cfg_dest }}'
 
 ###################################################################################################

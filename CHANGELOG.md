@@ -6,6 +6,9 @@
 
 # **[Unreleased](https://github.com/travisperkins/artemis/compare/v1.5.0...HEAD) (HEAD)**
 
+## NOTES:
+1. Globally adopt **trim** during variable length validation
+
 ### boot/grub/control
 - **Bugfix:** Incomplete task tagging - [Katherine Albany]
 

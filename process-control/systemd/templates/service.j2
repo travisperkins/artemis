@@ -6,46 +6,46 @@
 
 [Unit]
 Description={{ systemd_name }}
-{% if systemd_after is defined and systemd_after is not none and systemd_after | length > 0 %}After={{ systemd_after }}
+{% if systemd_after is defined and systemd_after is not none and systemd_after | trim | length > 0 %}After={{ systemd_after }}
 {% endif %}
 
 [Service]
-{% if systemd_type is defined and systemd_type is not none and systemd_type | length > 0 %}Type={{ systemd_type }}
+{% if systemd_type is defined and systemd_type is not none and systemd_type | trim | length > 0 %}Type={{ systemd_type }}
 {% endif %}
-{% if systemd_working_dir is defined and systemd_working_dir is not none and systemd_working_dir | length > 0 %}WorkingDirectory={{ systemd_working_dir }}
+{% if systemd_working_dir is defined and systemd_working_dir is not none and systemd_working_dir | trim | length > 0 %}WorkingDirectory={{ systemd_working_dir }}
 {% endif %}
-{% if systemd_env_file is defined and systemd_env_file is not none and systemd_env_file | length > 0 %}
+{% if systemd_env_file is defined and systemd_env_file is not none and systemd_env_file | trim | length > 0 %}
 EnvironmentFile={{ systemd_env_file }}
 {% endif %}
-{% if systemd_limitnofile is defined and systemd_limitnofile is not none and systemd_limitnofile | length > 0 %}
+{% if systemd_limitnofile is defined and systemd_limitnofile is not none and systemd_limitnofile | trim | length > 0 %}
 LimitNOFILE={{ systemd_limitnofile }}
 {% endif %}
 
 User={{ systemd_run_as }}
-{% if systemd_env_vars is defined and systemd_env_vars is not none and systemd_env_vars | length > 0 %}Environment={% for entry in systemd_env_vars %}{{ entry }}{% if not loop.last %} {% endif %}{% endfor %}
+{% if systemd_env_vars is defined and systemd_env_vars is not none and systemd_env_vars | trim | length > 0 %}Environment={% for entry in systemd_env_vars %}{{ entry }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 
-{% if systemd_pre_start_commands is defined and systemd_pre_start_commands is not none and systemd_pre_start_commands | length > 0 %}{% for command in systemd_pre_start_commands %}ExecStartPre={{ command }}
+{% if systemd_pre_start_commands is defined and systemd_pre_start_commands is not none and systemd_pre_start_commands | trim | length > 0 %}{% for command in systemd_pre_start_commands %}ExecStartPre={{ command }}
 {% endfor %}{% endif %}
 
 ExecStart={{ systemd_command }}
 
-{% if systemd_post_start_commands is defined and systemd_post_start_commands is not none and systemd_post_start_commands | length > 0 %}{% for command in systemd_post_start_commands %}ExecStartPost={{ command }}{% endfor %}
+{% if systemd_post_start_commands is defined and systemd_post_start_commands is not none and systemd_post_start_commands | trim | length > 0 %}{% for command in systemd_post_start_commands %}ExecStartPost={{ command }}{% endfor %}
 {% endif %}
-{% if systemd_service_reload_command is defined and systemd_service_reload_command is not none and systemd_service_reload_command | length > 0 %}ExecReload={{ systemd_service_reload_command }}{% endif %}
+{% if systemd_service_reload_command is defined and systemd_service_reload_command is not none and systemd_service_reload_command | trim | length > 0 %}ExecReload={{ systemd_service_reload_command }}{% endif %}
 
-{% if systemd_pre_stop_commands is defined and systemd_pre_stop_commands is not none and systemd_pre_stop_commands | length > 0 %}{% for command in systemd_pre_stop_commands %}ExecStopPre={{ command }}{% endfor %}
+{% if systemd_pre_stop_commands is defined and systemd_pre_stop_commands is not none and systemd_pre_stop_commands | trim | length > 0 %}{% for command in systemd_pre_stop_commands %}ExecStopPre={{ command }}{% endfor %}
 {% endif %}
-{% if systemd_stop_command is defined and systemd_stop_command is not none and systemd_stop_command | length > 0 %}ExecStop={{ systemd_stop_command }}{% endif %}
+{% if systemd_stop_command is defined and systemd_stop_command is not none and systemd_stop_command | trim | length > 0 %}ExecStop={{ systemd_stop_command }}{% endif %}
 
-{% if systemd_post_stop_commands is defined and systemd_post_stop_commands is not none and systemd_post_stop_commands | length > 0 %}{% for command in systemd_post_stop_commands %}ExecStopPost={{ command }}{% endfor %}
+{% if systemd_post_stop_commands is defined and systemd_post_stop_commands is not none and systemd_post_stop_commands | trim | length > 0 %}{% for command in systemd_post_stop_commands %}ExecStopPost={{ command }}{% endfor %}
 {% endif %}
 
-{% if systemd_autorestart is defined and systemd_autorestart is not none and systemd_autorestart | length > 0 %}Restart={{ systemd_autorestart }}{% endif %}
+{% if systemd_autorestart is defined and systemd_autorestart is not none and systemd_autorestart | trim | length > 0 %}Restart={{ systemd_autorestart }}{% endif %}
 
-{% if systemd_autorestart_delay is defined and systemd_autorestart_delay is not none and systemd_autorestart_delay | length > 0 %}RestartSec={{ systemd_autorestart_delay }}{% endif %}
+{% if systemd_autorestart_delay is defined and systemd_autorestart_delay is not none and systemd_autorestart_delay | trim | length > 0 %}RestartSec={{ systemd_autorestart_delay }}{% endif %}
 
-{% if systemd_service_return_codes is defined and systemd_service_return_codes is not none and systemd_service_return_codes | length > 0 %}SuccessExitStatus={% for code in systemd_service_return_codes %}{{ code }}{% if not loop.last %} {% endif %}{% endfor %}
+{% if systemd_service_return_codes is defined and systemd_service_return_codes is not none and systemd_service_return_codes | trim | length > 0 %}SuccessExitStatus={% for code in systemd_service_return_codes %}{{ code }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 
 

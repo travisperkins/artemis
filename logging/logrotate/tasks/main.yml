@@ -7,11 +7,11 @@
 
       - logrotate_name is defined
       - logrotate_name is not none
-      - logrotate_name | length > 0
+      - logrotate_name | trim | length > 0
 
       - logrotate_file is defined
       - logrotate_file is not none
-      - logrotate_file | length > 0
+      - logrotate_file | trim | length > 0
 
       - logrotate_frequency is not none
       - logrotate_frequency in ['daily', 'weekly', 'monthly', 'yearly']

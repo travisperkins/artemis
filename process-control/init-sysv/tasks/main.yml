@@ -9,11 +9,11 @@
 
       - init_sysv_name is defined
       - init_sysv_name is not none
-      - init_sysv_name | length > 0
+      - init_sysv_name | trim | length > 0
 
       - init_sysv_command is defined
       - init_sysv_command is not none
-      - init_sysv_command | length > 0
+      - init_sysv_command | trim | length > 0
 
   tags:
     - artemis

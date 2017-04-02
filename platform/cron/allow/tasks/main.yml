@@ -6,7 +6,7 @@
     that:
 
       - cron_allow_user is not none
-      - cron_allow_user | length > 0
+      - cron_allow_user | trim | length > 0
 
       - cron_allow_user_state in ['present', 'absent']
 

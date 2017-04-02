@@ -21,10 +21,10 @@
     that:
 
       - overrides_file is not none
-      - overrides_file | length > 0
+      - overrides_file | trim | length > 0
 
       - overrides_path is not none
-      - overrides_path | length > 0
+      - overrides_path | trim | length > 0
 
       - '{{ deployment_mode_is_live }} or {{ deployment_mode_is_image }}'
 
@@ -77,7 +77,7 @@
 
       - check.stat.md5 is defined
       - check.stat.md5 is not none
-      - check.stat.md5 | length > 0
+      - check.stat.md5 | trim | length > 0
 
   tags:
     - artemis

@@ -33,7 +33,7 @@
 
       - ssh_user is defined
       - ssh_user is not none
-      - ssh_user | length > 0
+      - ssh_user | trim | length > 0
 
   tags:
     - artemis

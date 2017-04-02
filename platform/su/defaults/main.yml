@@ -20,7 +20,7 @@ su_pam_regex_suffix: .*$
 su_pam_root_control: sufficient
 su_pam_root_module : pam_rootok.so
 su_pam_root_search : '{{ su_pam_regex_prefix }}{{  su_pam_root_module  }}{{  su_pam_regex_suffix }}'
-su_pam_root_replace: '{{ su_pam_type         }} {{ su_pam_root_control }} {{ su_pam_root_module  }}{% if su_pam_root_args is defined and su_pam_root_args is not none and su_pam_root_args | length > 0 %} {{ su_pam_root_args }}{% endif %}'
+su_pam_root_replace: '{{ su_pam_type         }} {{ su_pam_root_control }} {{ su_pam_root_module  }}{% if su_pam_root_args is defined and su_pam_root_args is not none and su_pam_root_args | trim | length > 0 %} {{ su_pam_root_args }}{% endif %}'
 su_pam_root_insert : BOF
 
 ###################################################################################################
@@ -29,7 +29,7 @@ su_pam_wheel        : true
 su_pam_wheel_control: required
 su_pam_wheel_module : pam_wheel.so
 su_pam_wheel_search : '{{ su_pam_regex_prefix    }}{{  su_pam_wheel_module  }}{{  su_pam_regex_suffix }}'
-su_pam_wheel_replace: '{{ su_pam_type            }} {{ su_pam_wheel_control }} {{ su_pam_wheel_module }}{% if su_pam_wheel_args is defined and su_pam_wheel_args is not none and su_pam_wheel_args | length > 0 %} {{ su_pam_wheel_args }}{% endif %}'
+su_pam_wheel_replace: '{{ su_pam_type            }} {{ su_pam_wheel_control }} {{ su_pam_wheel_module }}{% if su_pam_wheel_args is defined and su_pam_wheel_args is not none and su_pam_wheel_args | trim | length > 0 %} {{ su_pam_wheel_args }}{% endif %}'
 su_pam_wheel_insert : '{{ su_pam_root_replace    }}'
 su_pam_wheel_state  : '{% if su_pam_wheel | bool %}present{% else %}absent{% endif %}'
 

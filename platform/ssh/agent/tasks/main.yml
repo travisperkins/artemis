@@ -7,7 +7,7 @@
 
       - ssh_agent_user is defined
       - ssh_agent_user is not none
-      - ssh_agent_user | length > 0
+      - ssh_agent_user | trim | length > 0
 
   tags:
     - artemis

@@ -48,7 +48,7 @@
   when: not bounce
     and bounce_required_file is defined
     and bounce_required_file is not none
-    and bounce_required_file | length > 0
+    and bounce_required_file | trim | length > 0
 
   include: required.yml
 

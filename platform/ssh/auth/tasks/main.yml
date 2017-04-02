@@ -7,7 +7,7 @@
 
       - ssh_key_name is defined
       - ssh_key_name is not none
-      - ssh_key_name | length > 0
+      - ssh_key_name | trim | length > 0
 
   tags:
     - artemis

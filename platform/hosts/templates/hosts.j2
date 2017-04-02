@@ -15,7 +15,7 @@
 {{ hosts_ipv6_link_mcast_allrouters_address }} {{ hosts_ipv6_link_mcast_allrouters_fqdn }} {{ hosts_ipv6_link_mcast_allrouters_alias }}
 
 {% endif %}
-{% if hosts_entries is defined and hosts_entries is not none and hosts_entries | length > 0 %}
+{% if hosts_entries is defined and hosts_entries is not none and hosts_entries | trim | length > 0 %}
 ###################################################################################################
 
 {% for entry in hosts_entries %}

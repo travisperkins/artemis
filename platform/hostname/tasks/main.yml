@@ -9,7 +9,7 @@
 
       - host_name is defined
       - host_name is not none
-      - host_name | length > 0
+      - host_name | trim | length > 0
 
   tags:
     - artemis

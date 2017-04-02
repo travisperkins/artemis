@@ -37,10 +37,10 @@ Ciphers                {{ sshd_ciphers                }}
 LogLevel               {{ sshd_loglevel               }}
 AcceptEnv              {{ sshd_acceptenv              }}
 PrintMotd              {{ sshd_printmotd              }}
-{% if sshd_allowusers is not none and sshd_allowusers | length > 0 %}
+{% if sshd_allowusers is not none and sshd_allowusers | trim | length > 0 %}
 AllowUsers             {{ sshd_allowusers             }}
 {% endif %}
-{% if sshd_allowgroups is not none and sshd_allowgroups | length > 0 %}
+{% if sshd_allowgroups is not none and sshd_allowgroups | trim | length > 0 %}
 AllowGroups            {{ sshd_allowgroups            }}
 {% endif %}
 Compression            {{ sshd_compression            }}

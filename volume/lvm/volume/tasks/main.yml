@@ -7,11 +7,11 @@
 
       - lvm_volume_name is defined
       - lvm_volume_name is not none
-      - lvm_volume_name | length > 0
+      - lvm_volume_name | trim | length > 0
 
       - lvm_volume_group is defined
       - lvm_volume_group is not none
-      - lvm_volume_group | length > 0
+      - lvm_volume_group | trim | length > 0
 
   tags:
     - artemis

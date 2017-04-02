@@ -9,11 +9,11 @@
 
       - host_name is defined
       - host_name is not none
-      - host_name | length > 0
+      - host_name | trim | length > 0
 
       - host_domain is defined
       - host_domain is not none
-      - host_domain | length > 0
+      - host_domain | trim | length > 0
 
   tags:
     - artemis

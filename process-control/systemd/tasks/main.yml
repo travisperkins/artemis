@@ -7,11 +7,11 @@
 
       - systemd_name is defined
       - systemd_name is not none
-      - systemd_name | length > 0
+      - systemd_name | trim | length > 0
 
       - systemd_command is defined
       - systemd_command is not none
-      - systemd_command | length > 0
+      - systemd_command | trim | length > 0
 
   tags:
     - artemis

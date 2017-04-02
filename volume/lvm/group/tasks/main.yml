@@ -7,14 +7,14 @@
 
       - lvm_group_name is defined
       - lvm_group_name is not none
-      - lvm_group_name | length > 0
+      - lvm_group_name | trim | length > 0
 
       - lvm_group_devices is defined
       - lvm_group_devices is not none
-      - lvm_group_devices | length > 0
+      - lvm_group_devices | trim | length > 0
 
       - lvm_group_devices_flat is not none
-      - lvm_group_devices_flat | length > 0
+      - lvm_group_devices_flat | trim | length > 0
 
   tags:
     - artemis

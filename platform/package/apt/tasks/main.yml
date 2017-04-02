@@ -33,7 +33,7 @@
 
       - package_apt_sources is defined
       - package_apt_sources is not none
-      - package_apt_sources | length > 0
+      - package_apt_sources | trim | length > 0
 
   tags:
     - artemis
@@ -47,7 +47,7 @@
 
   when: package_apt_keys is defined
     and package_apt_keys is not none
-    and package_apt_keys | length > 0
+    and package_apt_keys | trim | length > 0
 
   become: true
 

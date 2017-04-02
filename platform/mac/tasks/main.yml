@@ -30,7 +30,7 @@
     that:
 
       - mac_security is not none
-      - mac_security | length > 0
+      - mac_security | trim | length > 0
 
   tags:
     - artemis

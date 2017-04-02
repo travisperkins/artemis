@@ -28,18 +28,18 @@
 
   when: proxy_host is defined
     and proxy_host is not none
-    and proxy_host | length > 0
+    and proxy_host | trim | length > 0
 
     and proxy_port is defined
     and proxy_port is not none
-    and proxy_port | string | length > 0
+    and proxy_port | trim | length > 0
 
   set_fact:
     proxy_enabled       : true
     proxy_http_endpoint : '{{ proxy_http_protocol  }}{{ proxy_host }}:{{ proxy_port }}'
     proxy_https_endpoint: '{{ proxy_https_protocol }}{{ proxy_host }}:{{ proxy_port }}'
     proxy_all_endpoint  : '{{ proxy_all_protocol   }}{{ proxy_host }}:{{ proxy_port }}'
-    proxy_ignore_mask   : '{{ network_ipv4_loopback_address }}{% for entry in ansible_all_ipv4_addresses %},{{ entry }}{% endfor %},{{ network_ipv4_loopback_name }},{{ ansible_hostname }},{{ ansible_fqdn }},.{{ ansible_domain }}{% if proxy_ignore_masks is defined and proxy_ignore_masks is not none and proxy_ignore_masks | length > 0 %}{% for entry in proxy_ignore_masks %},{{ entry }}{% endfor %}{% endif %}'
+    proxy_ignore_mask   : '{{ network_ipv4_loopback_address }}{% for entry in ansible_all_ipv4_addresses %},{{ entry }}{% endfor %},{{ network_ipv4_loopback_name }},{{ ansible_hostname }},{{ ansible_fqdn }},.{{ ansible_domain }}{% if proxy_ignore_masks is defined and proxy_ignore_masks is not none and proxy_ignore_masks | trim | length > 0 %}{% for entry in proxy_ignore_masks %},{{ entry }}{% endfor %}{% endif %}'
 
   tags:
     - artemis

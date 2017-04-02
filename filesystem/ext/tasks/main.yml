@@ -7,11 +7,11 @@
 
       - ext_label is defined
       - ext_label is not none
-      - ext_label | length > 0
+      - ext_label | trim | length > 0
 
       - ext_device is defined
       - ext_device is not none
-      - ext_device | length > 0
+      - ext_device | trim | length > 0
 
       - ext_version is defined
       - ext_version is not none

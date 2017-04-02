@@ -31,11 +31,11 @@
 
       - btrfs_label is defined
       - btrfs_label is not none
-      - btrfs_label | length > 0
+      - btrfs_label | trim | length > 0
 
       - btrfs_devices is defined
       - btrfs_devices is not none
-      - btrfs_devices | length > 0
+      - btrfs_devices | trim | length > 0
 
       - btrfs_compress is not none
       - btrfs_compress in ['no', 'lzo', 'zlib']

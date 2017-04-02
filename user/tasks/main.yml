@@ -7,11 +7,11 @@
 
       - user_name is defined
       - user_name is not none
-      - user_name | length > 0
+      - user_name | trim | length > 0
 
       - user_base is defined
       - user_base is not none
-      - user_base | length > 0
+      - user_base | trim | length > 0
 
   tags:
     - artemis

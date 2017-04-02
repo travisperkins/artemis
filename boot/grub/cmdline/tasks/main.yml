@@ -7,11 +7,11 @@
 
       - grub_cmdline_arg_name is defined
       - grub_cmdline_arg_name is not none
-      - grub_cmdline_arg_name | length > 0
+      - grub_cmdline_arg_name | trim | length > 0
 
       - grub_cmdline_arg_value is defined
       - grub_cmdline_arg_value is not none
-      - grub_cmdline_arg_value | length > 0
+      - grub_cmdline_arg_value | trim | length > 0
 
   tags:
     - artemis

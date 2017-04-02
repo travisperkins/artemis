@@ -4,12 +4,12 @@
 
   when: proxy_pac_url is defined
     and proxy_pac_url is not none
-    and proxy_pac_url | length > 0
+    and proxy_pac_url | trim | length > 0
 
   set_fact:
     proxy_pac_enabled : true
-    proxy_pac_local   : '{% if proxy_pac_edits is defined and proxy_pac_edits is not none and proxy_pac_edits | length > 0 %}true{% endif %}'
-    proxy_pac_endpoint: '{% if proxy_pac_edits is defined and proxy_pac_edits is not none and proxy_pac_edits | length > 0 %}{{ proxy_pac_local_url }}{% else %}{{ proxy_pac_url }}{% endif %}'
+    proxy_pac_local   : '{% if proxy_pac_edits is defined and proxy_pac_edits is not none and proxy_pac_edits | trim | length > 0 %}true{% endif %}'
+    proxy_pac_endpoint: '{% if proxy_pac_edits is defined and proxy_pac_edits is not none and proxy_pac_edits | trim | length > 0 %}{{ proxy_pac_local_url }}{% else %}{{ proxy_pac_url }}{% endif %}'
 
   tags:
     - artemis

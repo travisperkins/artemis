@@ -4,7 +4,7 @@
 
 <!------------------------------------------------------------------------------------------------>
 
-# **[Unreleased](https://github.com/travisperkins/artemis/compare/v1.5.0...HEAD) (HEAD)**
+# **[v1.5.1](https://github.com/travisperkins/artemis/compare/v1.5.0...v1.5.1) (April 16, 2017)**
 
 ## NOTES:
 1. Globally adopt **trim** during variable length validation

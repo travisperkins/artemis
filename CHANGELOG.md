@@ -6,6 +6,10 @@
 
 # **[Unreleased](https://github.com/travisperkins/artemis/compare/v1.5.2...HEAD) (HEAD)**
 
+### shared
+- **Port:** **ansible_ssh_host** becomes **ansible_host** - [Katherine Albany], [Richard Lees]
+- **Port:** **ansible_ssh_port** becomes **ansible_port** - [Katherine Albany], [Richard Lees]
+
 <!------------------------------------------------------------------------------------------------>
 
 # **[v1.5.2](https://github.com/travisperkins/artemis/compare/v1.5.1...v1.5.2) (August 15, 2017)**

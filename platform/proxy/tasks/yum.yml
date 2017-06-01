@@ -6,7 +6,7 @@
 
   become: true
 
-  with_items: proxy_yum_lines
+  with_items: '{{ proxy_yum_lines }}'
 
   lineinfile: dest='{{ proxy_yum_file }}'
               mode='{{ proxy_yum_mode }}'
@@ -29,7 +29,7 @@
 
   become: true
 
-  with_items: proxy_yum_lines
+  with_items: '{{ proxy_yum_lines }}'
 
   lineinfile: dest='{{ proxy_yum_file }}'
               mode='{{ proxy_yum_mode }}'

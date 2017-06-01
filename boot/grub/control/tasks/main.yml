@@ -53,7 +53,7 @@
 
   become: true
 
-  with_items: grub_dependencies
+  with_items: '{{ grub_dependencies }}'
 
   yum : name={{ item }} state=present
 

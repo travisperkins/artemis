@@ -4,7 +4,7 @@
 
   become: true
 
-  with_items: ntpd_dependencies
+  with_items: '{{ ntpd_dependencies }}'
 
   yum : name={{ item }} state=present
 

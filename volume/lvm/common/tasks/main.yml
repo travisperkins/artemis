@@ -6,7 +6,7 @@
 
   become: true
 
-  with_items: lvm_dependencies
+  with_items: '{{ lvm_dependencies }}'
 
   apt : name={{ item }} state=present install_recommends=false
 
@@ -25,7 +25,7 @@
 
   become: true
 
-  with_items: lvm_dependencies
+  with_items: '{{ lvm_dependencies }}'
 
   yum : name={{ item }} state=present
 

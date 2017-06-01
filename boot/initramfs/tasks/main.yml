@@ -34,7 +34,7 @@
 
   become: true
 
-  with_items: initramfs_dependencies
+  with_items: '{{ initramfs_dependencies }}'
 
   yum : name={{ item }} state=present
 

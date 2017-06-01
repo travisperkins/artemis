@@ -51,7 +51,7 @@
 
   become: true
 
-  with_items: package_apt_keys
+  with_items: '{{ package_apt_keys }}'
 
   apt_key: data='{{ item }}'
 

@@ -49,7 +49,7 @@
 
   become: true
 
-  with_items: ssh_dependencies
+  with_items: '{{ ssh_dependencies }}'
 
   apt : name={{ item }} state=present install_recommends=false
 
@@ -68,7 +68,7 @@
 
   become: true
 
-  with_items: ssh_dependencies
+  with_items: '{{ ssh_dependencies }}'
 
   yum : name={{ item }} state=present
 

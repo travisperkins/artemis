@@ -4,7 +4,7 @@
 
   become: true
 
-  with_items: mac_dependencies
+  with_items: '{{ mac_dependencies }}'
 
   yum : name={{ item }} state=present
 

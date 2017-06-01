@@ -63,7 +63,7 @@
 
   become: true
 
-  with_items: proxy_pac_edits
+  with_items: '{{ proxy_pac_edits }}'
 
   replace: regexp={{ item.search          }}
           replace={{ item.replace         }}
@@ -83,7 +83,7 @@
 
   become: true
 
-  with_items: proxy_pac_env_lines
+  with_items: '{{ proxy_pac_env_lines }}'
 
   lineinfile: dest='{{ proxy_env_file   }}'
             regexp='{{ proxy_env_prefix }}{{ item.name }}='
@@ -104,7 +104,7 @@
 
   become: true
 
-  with_items: proxy_pac_env_lines
+  with_items: '{{ proxy_pac_env_lines }}'
 
   lineinfile: dest='{{ proxy_env_file   }}'
             regexp='{{ proxy_env_prefix }}{{ item.name }}='

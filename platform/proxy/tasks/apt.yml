@@ -6,7 +6,7 @@
 
   become: true
 
-  with_items: proxy_apt_lines
+  with_items: '{{ proxy_apt_lines }}'
 
   lineinfile: dest='{{ proxy_apt_file }}'
               mode='{{ proxy_apt_mode }}'

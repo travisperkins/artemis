@@ -30,7 +30,7 @@
 
   become: true
 
-  with_items: motd_pam_sshd_remove
+  with_items: '{{ motd_pam_sshd_remove }}'
 
   lineinfile: dest={{ motd_pam_sshd_path }}
             regexp={{ item               }}
@@ -48,7 +48,7 @@
 
   become: true
 
-  with_items: motd_pam_login_remove
+  with_items: '{{ motd_pam_login_remove }}'
 
   lineinfile: dest={{ motd_pam_login_path }}
             regexp={{ item                }}

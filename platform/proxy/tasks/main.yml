@@ -54,7 +54,7 @@
 
   become: true
 
-  with_items: proxy_env_lines
+  with_items: '{{ proxy_env_lines }}'
 
   lineinfile: dest='{{ proxy_env_file   }}'
             regexp='{{ proxy_env_prefix }}{{ item.name }}='
@@ -76,7 +76,7 @@
 
   become: true
 
-  with_items: proxy_env_lines
+  with_items: '{{ proxy_env_lines }}'
 
   lineinfile: dest='{{ proxy_env_file   }}'
             regexp='{{ proxy_env_prefix }}{{ item.name }}='
@@ -97,7 +97,7 @@
 
   become: true
 
-  with_items: proxy_sudoers_lines
+  with_items: '{{ proxy_sudoers_lines }}'
 
   lineinfile: dest='{{ proxy_sudoers_file     }}'
               line='{{ proxy_sudoers_prefix   }}{{ item }}'
@@ -117,7 +117,7 @@
 
   become: true
 
-  with_items: proxy_sudoers_lines
+  with_items: '{{ proxy_sudoers_lines }}'
 
   lineinfile: dest='{{ proxy_sudoers_file     }}'
               line='{{ proxy_sudoers_prefix   }}{{ item }}'

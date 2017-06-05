@@ -35,7 +35,9 @@ UseDNS                 {{ sshd_usedns                 }}
 UsePAM                 {{ sshd_usepam                 }}
 Ciphers                {{ sshd_ciphers                }}
 LogLevel               {{ sshd_loglevel               }}
+{% if sshd_acceptenv is not none and sshd_acceptenv | trim | length > 0 %}
 AcceptEnv              {{ sshd_acceptenv              }}
+{% endif %}
 PrintMotd              {{ sshd_printmotd              }}
 {% if sshd_allowusers is not none and sshd_allowusers | trim | length > 0 %}
 AllowUsers             {{ sshd_allowusers             }}

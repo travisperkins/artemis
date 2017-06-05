@@ -9,6 +9,9 @@
 ## NOTES:
 1. Globally adopt enclosing **with** clause variables in Jinja2 expression syntax
 
+### platform/locale
+- **Port:** Remove double quotation mark escape characters - [Katherine Albany], [Richard Lees]
+
 ### platform/ping
 - **Port:** Mute execute task change indicator - [Katherine Albany], [Richard Lees]
 

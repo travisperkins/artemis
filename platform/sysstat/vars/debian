@@ -2,6 +2,6 @@
 
 sysstat_dest   : '{{ etc_base }}/default/sysstat'
 sysstat_search : ^ENABLED=
-sysstat_replace: 'ENABLED=\"{% if sysstat_collector %}true{% else %}false{% endif %}\"'
+sysstat_replace: 'ENABLED="{% if sysstat_collector %}true{% else %}false{% endif %}"'
 
 ###################################################################################################

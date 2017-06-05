@@ -15,6 +15,9 @@
 ### platform/ping
 - **Port:** Mute execute task change indicator - [Katherine Albany], [Richard Lees]
 
+### platform/ssh/daemon
+- **Bugfix:** Prevent **AcceptEnv** being configured without valid content - [Katherine Albany]
+
 ### platform/sysstat
 - **Port:** Remove double quotation mark escape characters - [Katherine Albany], [Richard Lees]
 

@@ -46,6 +46,8 @@
 
   raw: '{{ ping_command }}'
 
+  changed_when: false
+
   tags:
     - artemis
     - platform

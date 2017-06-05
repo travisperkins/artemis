@@ -9,6 +9,9 @@
 ## NOTES:
 1. Globally adopt enclosing **with** clause variables in Jinja2 expression syntax
 
+### platform/ping
+- **Port:** Mute execute task change indicator - [Katherine Albany], [Richard Lees]
+
 ### shared
 - **Port:** **ansible_ssh_host** becomes **ansible_host** - [Katherine Albany], [Richard Lees]
 - **Port:** **ansible_ssh_port** becomes **ansible_port** - [Katherine Albany], [Richard Lees]

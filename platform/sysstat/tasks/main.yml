@@ -33,6 +33,7 @@
   when: os_family_is_debian
 
   include: debian.yml
+  static : false
 
   tags:
     - artemis
@@ -47,6 +48,7 @@
   when: os_family_is_redhat
 
   include: redhat.yml
+  static : false
 
   tags:
     - artemis

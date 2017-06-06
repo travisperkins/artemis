@@ -34,6 +34,7 @@
     and distribution_major_version_lower == '14'
 
   include: ubuntu-14.yml
+  static : false
 
   tags:
     - artemis
@@ -49,6 +50,7 @@
          and distribution_major_version_lower == '14')
 
   include: systemd.yml
+  static : false
 
   tags:
     - artemis

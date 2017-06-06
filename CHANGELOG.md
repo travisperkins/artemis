@@ -7,6 +7,7 @@
 # **[Unreleased](https://github.com/travisperkins/artemis/compare/v1.5.2...HEAD) (HEAD)**
 
 ## NOTES:
+1. Globally adopt dynamic task includes
 1. Globally adopt enclosing **with** clause variables in Jinja2 expression syntax
 
 ### platform/locale

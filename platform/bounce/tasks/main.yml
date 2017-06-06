@@ -51,11 +51,13 @@
     and bounce_required_file | trim | length > 0
 
   include: required.yml
+  static : false
 
   tags:
     - artemis
     - platform
     - bounce
+    - required
 
 ###################################################################################################
 

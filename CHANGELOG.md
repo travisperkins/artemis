@@ -13,6 +13,10 @@
 ### platform/locale
 - **Port:** Remove double quotation mark escape characters - [Katherine Albany], [Richard Lees]
 
+### platform/package/patch
+- **Port:** Adopt apt module autoremove functionality - [Katherine Albany]
+- **Port:** Restore idempotency by combining apt update and upgrade tasks - [Katherine Albany]
+
 ### platform/ping
 - **Port:** Mute execute task change indicator - [Katherine Albany], [Richard Lees]
 

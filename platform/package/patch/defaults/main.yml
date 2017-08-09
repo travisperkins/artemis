@@ -6,8 +6,8 @@ patch_managed: true
 
 patch_update    : true
 patch_upgrade   : false
+patch_autoclean : true
 patch_autoremove: true
-patch_clean     : true
 
 ###################################################################################################
 

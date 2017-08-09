@@ -1,29 +1,14 @@
 ###################################################################################################
 
-- name: debian | update
-
-  when: patch_update
-
-  become: true
-
-  apt : update_cache=yes
-
-  tags:
-    - artemis
-    - platform
-    - package
-    - patch
-    - debian
-
-###################################################################################################
-
 - name: debian | upgrade
 
   when: patch_upgrade
 
   become: true
 
-  apt : upgrade={{ patch_apt_upgrade }}
+  apt : update_cache={{ patch_update      }}
+        autoremove={{   patch_autoremove  }}
+        upgrade={{      patch_apt_upgrade }}
 
   register: upgrade
 
@@ -36,27 +21,9 @@
 
 ###################################################################################################
 
-- name: debian | autoremove
-
-  when: patch_autoremove
-    and upgrade.changed
-
-  become: true
-
-  shell: DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
-
-  tags:
-    - artemis
-    - platform
-    - package
-    - patch
-    - debian
-
-###################################################################################################
-
 - name: debian | clean
 
-  when: patch_clean
+  when: patch_autoclean
     and upgrade.changed
 
   become: true

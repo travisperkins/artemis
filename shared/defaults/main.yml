@@ -140,13 +140,17 @@ distribution_is_rhel  : ('{{ distribution_lower          }}' == 'rhel')
 
 distribution_release_native    :  '{{ ansible_distribution_release        }}'
 distribution_release_lower     :  '{{ distribution_release_native | lower }}'
-distribution_release_is_jessie : ('{{ distribution_release_lower          }}' == 'jessie' )
-distribution_release_is_trusty : ('{{ distribution_release_lower          }}' == 'trusty' )
-distribution_release_is_utopic : ('{{ distribution_release_lower          }}' == 'utopic' )
-distribution_release_is_vivid  : ('{{ distribution_release_lower          }}' == 'vivid'  )
-distribution_release_is_wily   : ('{{ distribution_release_lower          }}' == 'wily'   )
-distribution_release_is_xenial : ('{{ distribution_release_lower          }}' == 'xenial' )
-distribution_release_is_yakkety: ('{{ distribution_release_lower          }}' == 'yakkety')
+
+distribution_release_is_jessie : ('{{ distribution_release_lower }}' == 'jessie' )
+distribution_release_is_stretch: ('{{ distribution_release_lower }}' == 'stretch')
+
+distribution_release_is_trusty : ('{{ distribution_release_lower }}' == 'trusty' )
+distribution_release_is_utopic : ('{{ distribution_release_lower }}' == 'utopic' )
+distribution_release_is_vivid  : ('{{ distribution_release_lower }}' == 'vivid'  )
+distribution_release_is_wily   : ('{{ distribution_release_lower }}' == 'wily'   )
+distribution_release_is_xenial : ('{{ distribution_release_lower }}' == 'xenial' )
+distribution_release_is_yakkety: ('{{ distribution_release_lower }}' == 'yakkety')
+distribution_release_is_zesty  : ('{{ distribution_release_lower }}' == 'zesty'  )
 
 ###################################################################################################
 

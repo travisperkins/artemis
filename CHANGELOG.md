@@ -6,6 +6,11 @@
 
 # **[Unreleased](https://github.com/travisperkins/artemis/compare/v1.5.1...HEAD) (HEAD)**
 
+## NOTES:
+1. Verified support for Debian 9 (Stretch)
+1. Verified support for Ubuntu 17.04 (Zesty)
+1. Ubuntu 16.10 (Yakkety) reaches end-of-life
+
 <!------------------------------------------------------------------------------------------------>
 
 # **[v1.5.1](https://github.com/travisperkins/artemis/compare/v1.5.0...v1.5.1) (April 16, 2017)**

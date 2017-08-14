@@ -11,6 +11,9 @@
 1. Verified support for Ubuntu 17.04 (Zesty)
 1. Ubuntu 16.10 (Yakkety) reaches end-of-life
 
+### platform/cron/allow
+- **Bugfix:** Allow multiple invocations from user role meta dependencies - [Richard Lees]
+
 <!------------------------------------------------------------------------------------------------>
 
 # **[v1.5.1](https://github.com/travisperkins/artemis/compare/v1.5.0...v1.5.1) (April 16, 2017)**

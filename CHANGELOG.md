@@ -14,6 +14,9 @@
 ### platform/cron/allow
 - **Bugfix:** Allow multiple invocations from user role meta dependencies - [Richard Lees]
 
+### platform/ntpd
+- **Change:** Replace use of deprecated **ntpdate** with **ntpd** - [Katherine Albany]
+
 <!------------------------------------------------------------------------------------------------>
 
 # **[v1.5.1](https://github.com/travisperkins/artemis/compare/v1.5.0...v1.5.1) (April 16, 2017)**

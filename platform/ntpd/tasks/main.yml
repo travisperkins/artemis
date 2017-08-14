@@ -108,40 +108,6 @@
 
 ###################################################################################################
 
-- name: managed | check
-
-  when: not ntpd_date_bypass
-
-  become: true
-
-  stat: path={{ managed_dest }} follow=true get_checksum=false get_md5=false
-
-  register: managed
-
-  tags:
-    - artemis
-    - platform
-    - ntpd
-
-###################################################################################################
-
-- name: date | set
-
-  when: ntpd_date_force
-    or (not ntpd_date_bypass
-    and not managed.stat.exists)
-
-  become: true
-
-  command: '{{ ntpd_date_command }}'
-
-  tags:
-    - artemis
-    - platform
-    - ntpd
-
-###################################################################################################
-
 - name: enable
 
   become: true
@@ -169,6 +135,39 @@
     - artemis
     - platform
     - ntpd
+
+###################################################################################################
+
+- name: managed | check
+
+  when: not ntpd_set_bypass
+
+  become: true
+
+  stat: path={{ managed_dest }} follow=true get_checksum=false get_md5=false
+
+  register: managed
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+
+###################################################################################################
+
+- name: set
+
+  when: ntpd_set_force
+    or (not ntpd_set_bypass
+    and not managed.stat.exists)
+
+  include: set.yml
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - set
 
 ###################################################################################################
 

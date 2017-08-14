@@ -1,5 +1,9 @@
 ###################################################################################################
 
+ntpd_word: ntpd
+
+###################################################################################################
+
 ntpd_base: '{{ etc_base }}'
 
 ###################################################################################################
@@ -15,19 +19,21 @@ ntpd_proto: udp
 
 ###################################################################################################
 
+ntpd_command: '{{ ntpd_word }}'
+
+###################################################################################################
+
 ntpd_driftfile: '{{ var_lib_base }}/ntp/drift'
 ntpd_logconfig: =allstatus +syncall
 
 ###################################################################################################
 
-ntpd_date_force  : false
-ntpd_date_bypass : false
-ntpd_date_samples: 4
-ntpd_date_command: ntpdate -bup {{ ntpd_date_samples }} {{ ntpd_servers_flat }}{{ ntpd_pools_flat }}
+ntpd_set_force  : false
+ntpd_set_bypass : false
+ntpd_set_command: '{{ ntpd_command }} -gq'
 
 ###################################################################################################
 
-ntpd_servers_flat       : '{% if ntpd_servers is defined and ntpd_servers is not none and ntpd_servers | trim | length > 0 %}{% for item in ntpd_servers %}{{ item }}{% if not loop.last %} {% endif %}{% endfor %}{% endif %}'
 ntpd_servers_is_supplied: (ntpd_servers is defined and ntpd_servers is not none and ntpd_servers | trim | length > 0)
 ntpd_servers_exclusive  : true
 
@@ -40,7 +46,6 @@ ntpd_pools:
   - 2.uk.pool.ntp.org
   - 3.uk.pool.ntp.org
 
-ntpd_pools_flat       : '{% if ntpd_pools is defined and ntpd_pools is not none and ntpd_pools | trim | length > 0 %}{% for item in ntpd_pools %}{% if not loop.first %} {% endif %}{{ item }}{% endfor %}{% endif %}'
 ntpd_pools_is_supplied: (ntpd_pools is defined and ntpd_pools is not none and ntpd_pools | trim | length > 0)
 ntpd_pools_exclusive  : false
 

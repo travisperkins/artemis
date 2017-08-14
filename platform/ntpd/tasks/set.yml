@@ -1,0 +1,33 @@
+###################################################################################################
+
+- name: set | stop
+
+  become: true
+
+  service: name={{ ntpd_service }} state=stopped
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - set
+
+###################################################################################################
+
+- name: set | date
+
+  when: ntpd_set_force
+    or (not ntpd_set_bypass
+    and not managed.stat.exists)
+
+  become: true
+
+  command: '{{ ntpd_set_command }}'
+
+  tags:
+    - artemis
+    - platform
+    - ntpd
+    - set
+
+###################################################################################################

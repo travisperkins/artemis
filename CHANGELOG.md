@@ -4,7 +4,7 @@
 
 <!------------------------------------------------------------------------------------------------>
 
-# **[Unreleased](https://github.com/travisperkins/artemis/compare/v1.5.1...HEAD) (HEAD)**
+# **[v1.5.2](https://github.com/travisperkins/artemis/compare/v1.5.1...v1.5.2) (August 15, 2017)**
 
 ## NOTES:
 1. Verified support for Debian 9 (Stretch)

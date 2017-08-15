@@ -134,7 +134,12 @@ distribution_lower    :  '{{ distribution_native | lower }}'
 distribution_is_debian: ('{{ distribution_lower          }}' == 'debian')
 distribution_is_ubuntu: ('{{ distribution_lower          }}' == 'ubuntu')
 distribution_is_centos: ('{{ distribution_lower          }}' == 'centos')
-distribution_is_rhel  : ('{{ distribution_lower          }}' == 'rhel')
+distribution_is_rhel  : ('{{ distribution_lower          }}' == 'rhel'  )
+
+###################################################################################################
+
+distribution_version_native: '{{ ansible_distribution_version        }}'
+distribution_version_lower : '{{ distribution_version_native | lower }}'
 
 ###################################################################################################
 

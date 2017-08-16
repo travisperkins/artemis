@@ -9,6 +9,7 @@
 ## NOTES:
 1. Globally adopt dynamic task includes
 1. Globally adopt enclosing **with** clause variables in Jinja2 expression syntax
+1. **This release is primarily a porting of v1.5.2 to achieve compatibility with Ansible >= 2.2.1.x**
 
 ### platform/locale
 - **Port:** Remove double quotation mark escape characters - [Katherine Albany], [Richard Lees]

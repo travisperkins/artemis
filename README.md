@@ -14,11 +14,11 @@ See [CHANGELOG] for complete release schedule
 
 ## Dependencies
 
-- **Ansible 1.9.x**
+- **Artemis v2.x**
+  - Ansible >= 2.2.1.x
 
-  **NOTE: Due to performance regressions in Ansible 2.x, Artemis is being maintained against Ansible 1.9.x.** The situation is being monitored and although performance has improved since 2.0.x, as of this writing, it is still not competitive with 1.9.x. Artemis will be migrated to Ansible 2.x when its performance becomes competitive with 1.9.x ***- October, 2016***
-
-  **UPDATE: Initial testing against Ansible 2.2 has proven extremely promising**; With the Ansible [CHANGELOG](https://github.com/ansible/ansible/blob/devel/CHANGELOG.md) additionally citing **"Major performance improvements"** ***- November, 2016***
+- **Artemis v1.5.x**
+  - Ansible 1.9.x
 
 <!------------------------------------------------------------------------------------------------>
 

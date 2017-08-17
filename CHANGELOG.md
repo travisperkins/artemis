@@ -4,7 +4,7 @@
 
 <!------------------------------------------------------------------------------------------------>
 
-# **[Unreleased](https://github.com/travisperkins/artemis/compare/v1.5.2...HEAD) (HEAD)**
+# **[v2.0.0](https://github.com/travisperkins/artemis/compare/v1.5.2...v2.0.0) (August 17, 2017)**
 
 ## NOTES:
 1. Globally adopt dynamic task includes

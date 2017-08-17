@@ -4,7 +4,7 @@
 
 ## A comprehensive [Ansible] library and operating system automation framework
 
-**The latest release is [v1.5.2](CHANGELOG.md#v152-august-15-2017) (August 15, 2017)**
+**The latest release is [v2.0.0](CHANGELOG.md#v200-august-17-2017) (August 17, 2017)**
 
 See [CHANGELOG] for complete release schedule
 

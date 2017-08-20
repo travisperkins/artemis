@@ -1,31 +1,5 @@
 ###################################################################################################
 
-- name: debian | import
-
-  include_vars: debian
-
-  tags:
-    - artemis
-    - platform
-    - motd
-    - debian
-
-###################################################################################################
-
-- name: debian | overrides
-
-  when: overrides_verified
-
-  include_vars: '{{ overrides_path }}'
-
-  tags:
-    - artemis
-    - platform
-    - motd
-    - debian
-
-###################################################################################################
-
 - name: debian | pam | sshd
 
   become: true

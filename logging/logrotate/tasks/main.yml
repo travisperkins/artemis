@@ -66,7 +66,6 @@
   template: src={{ logrotate_src     }}
            dest={{ logrotate_dest    }}
            mode={{ logrotate_mode    }}
-          owner={{ logrotate_as_user }}
 
   tags:
     - artemis

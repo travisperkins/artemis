@@ -11,7 +11,8 @@ logrotate_dependencies:
 ###################################################################################################
 
 logrotate_retain   : 50
-logrotate_as_user  : '{{ root_user }}'
+logrotate_as_user  : '{{ root_user         }}'
+logrotate_as_group : '{{ logrotate_as_user }}'
 logrotate_frequency: daily
 
 ###################################################################################################
@@ -29,7 +30,7 @@ logrotate_entries:
   - copytruncate
   - delaycompress
   - rotate {{ logrotate_retain    }}
-  - su {{     logrotate_as_user   }}
+  - su {{     logrotate_as_user   }} {{ logrotate_as_group }}
   - '{{       logrotate_frequency }}'
 
 ###################################################################################################

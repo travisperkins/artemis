@@ -6,6 +6,9 @@
 
 # **[Unreleased](https://github.com/travisperkins/artemis/compare/v2.0.0...HEAD) (HEAD)**
 
+### platform/ssh/daemon
+- **Remove**: **hmac-ripemd160-etm@openssh.com** and **hmac-ripemd160** MAC algorithms due to them being deprecated - [Richard Lees]
+
 <!------------------------------------------------------------------------------------------------>
 
 # **[v2.0.0](https://github.com/travisperkins/artemis/compare/v1.5.2...v2.0.0) (August 17, 2017)**

@@ -6,6 +6,12 @@
 
 # **[Unreleased](https://github.com/travisperkins/artemis/compare/v2.0.0...HEAD) (HEAD)**
 
+### platform/ntpd
+- **Change**: The discard average value has been changed. By default it is now **3**, for the **balanced** security mode it is now **4** and for the **enhanced** security mode it is now **9** - [Richard Lees]
+- **Change**: The initial manual time sync is now disabled by default. NTPD will take care of making sure the clock is syncronised when it is started. The manual sync can be turned back on by setting **ntpd_set_enabled** to **true** - [Richard Lees]
+- **Remove**: Variable **ntpd_set_bypass** removed as it has been deprecated by **ntpd_set_enabled** - [Richard Lees]
+- **Bugfix**: Remove redundant **when** clause from the set date task - [Richard Lees]
+
 ### platform/ssh/daemon
 - **Remove**: **hmac-ripemd160-etm@openssh.com** and **hmac-ripemd160** MAC algorithms due to them being deprecated - [Richard Lees]
 

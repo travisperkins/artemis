@@ -16,10 +16,6 @@
 
 - name: set | date
 
-  when: ntpd_set_force
-    or (not ntpd_set_bypass
-    and not managed.stat.exists)
-
   become: true
 
   command: '{{ ntpd_set_command }}'

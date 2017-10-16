@@ -29,7 +29,7 @@ ntpd_logconfig: =allstatus +syncall
 ###################################################################################################
 
 ntpd_set_force  : false
-ntpd_set_bypass : false
+ntpd_set_enabled: false
 ntpd_set_command: '{{ ntpd_command }} -gq'
 
 ###################################################################################################
@@ -72,7 +72,7 @@ ntpd_source_flags: '{{ ntpd_source_burst_flag }}{{ ntpd_source_iburst_flag }}'
 
 ###################################################################################################
 
-ntpd_discard_average: 5
+ntpd_discard_average: 3
 ntpd_discard_minimum: 2
 
 ###################################################################################################

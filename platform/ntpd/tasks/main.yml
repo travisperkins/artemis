@@ -142,7 +142,7 @@
 
 - name: managed | check
 
-  when: not ntpd_set_bypass
+  when: ntpd_set_enabled
 
   become: true
 
@@ -160,7 +160,7 @@
 - name: set
 
   when: ntpd_set_force
-    or (not ntpd_set_bypass
+    or (ntpd_set_enabled
     and not managed.stat.exists)
 
   include: set.yml

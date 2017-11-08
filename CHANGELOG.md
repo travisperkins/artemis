@@ -6,6 +6,10 @@
 
 # **[Unreleased](https://github.com/travisperkins/artemis/compare/v2.0.0...HEAD) (HEAD)**
 
+### logging/logrotate
+- **New:** Include group in **su** directive of logrotate configurations as logrotate requires this unless a default **su** has been specified in **logrotate.conf** - [Richard Lees]
+- **Change:** Ensure logrotate configurations are owned by **root** - [Richard Lees]
+
 ### platform/motd
 - **Change**: Move family and overrides imports into main tasks rather than debian tasks - [Richard Lees]
 

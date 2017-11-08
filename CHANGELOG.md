@@ -10,6 +10,9 @@
 - **New:** Include group in **su** directive of logrotate configurations as logrotate requires this unless a default **su** has been specified in **logrotate.conf** - [Richard Lees]
 - **Change:** Ensure logrotate configurations are owned by **root** - [Richard Lees]
 
+### platform/motd
+- **Change**: Move family and overrides imports into main tasks rather than debian tasks - [Richard Lees]
+
 ### platform/ntpd
 - **Change**: The discard average value has been changed. By default it is now **3**, for the **balanced** security mode it is now **4** and for the **enhanced** security mode it is now **9** - [Richard Lees]
 - **Change**: The initial manual time sync is now disabled by default. NTPD will take care of making sure the clock is syncronised when it is started. The manual sync can be turned back on by setting **ntpd_set_enabled** to **true** - [Richard Lees]

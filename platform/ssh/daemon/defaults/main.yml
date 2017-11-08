@@ -74,7 +74,7 @@ sshd_kexalgorithms         : curve25519-sha256@libssh.org,diffie-hellman-group-e
 sshd_x11forwarding         : '{{ sshd_false }}'
 sshd_logingracetime        : 120
 sshd_permitrootlogin       : without-password
-sshd_allowtcpforwarding    : '{{ sshd_true }}'
+sshd_allowtcpforwarding    : '{{ sshd_false }}'
 sshd_clientalivecountmax   : 3
 sshd_clientaliveinterval   : 0
 sshd_allowagentforwarding  : '{{ sshd_true }}'

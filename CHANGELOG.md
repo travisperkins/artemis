@@ -21,6 +21,7 @@
 
 ### platform/ssh/daemon
 - **Remove**: **hmac-ripemd160-etm@openssh.com** and **hmac-ripemd160** MAC algorithms due to them being deprecated - [Richard Lees]
+- **Change**: Disable **AllowTcpForwarding** by default - [Katherine Albany]
 
 <!------------------------------------------------------------------------------------------------>
 

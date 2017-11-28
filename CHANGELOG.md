@@ -4,6 +4,10 @@
 
 <!------------------------------------------------------------------------------------------------>
 
+**[Unreleased](https://github.com/travisperkins/artemis/compare/v2.1.0...HEAD) (HEAD)**
+
+<!------------------------------------------------------------------------------------------------>
+
 # **[v2.1.0](https://github.com/travisperkins/artemis/compare/v2.0.0...v2.1.0) (November 28, 2017)**
 
 ### logging/logrotate

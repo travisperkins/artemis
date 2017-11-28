@@ -35,6 +35,7 @@ See [CHANGELOG] for complete release schedule
 | Ubuntu 16.04 LTS (Xenial) | :white_check_mark: | Ongoing       |
 | Ubuntu 16.10 (Yakkety)    | :white_check_mark: | *End-of-life* |
 | Ubuntu 17.04 (Zesty)      | :white_check_mark: | Ongoing       |
+| Ubuntu 17.10 (Artful)     | :white_check_mark: | Ongoing       |
 | CentOS 7                  | :white_check_mark: | Ongoing       |
 | RHEL 7                    | :white_check_mark: | Infrequent    |
 
